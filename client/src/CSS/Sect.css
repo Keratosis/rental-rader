@@ -1,0 +1,41 @@
+/* Assuming you have a CSS file or you can use inline styles */
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  /* Add more styling for the section if needed */
+}
+
+.image-container,
+.text-container {
+  flex: 1;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  max-width: 100%; /* Image will fit the container on the left side */
+  display: block;
+  /* Add more styling for the image as needed */
+}
+
+.text-container {
+  background-color: #f2f2f2;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.text-container h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #333; 
+
+}
+
+.text-container p {
+  font-size: 18px;
+  color: #555; 
+}

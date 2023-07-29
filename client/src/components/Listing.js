@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
 
 function Listing() {
   const [listings, setListings] = useState([]);
-
   useEffect(() => {
-    // Fetch listings from the Flask API when the component mounts
-    axios.get(' http://127.0.0.1:5550/listings')
-      .then(response => {
-        setListings(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching listings:', error);
-      });
-  }, []);
+    fetch('/listings')
+    .then(res =>res.json())
+    .then(setListings)
+  }, [])
 
   return (
     <div>
       <h2>Listings</h2>
-      <ul>
+      <div className="row">
         {listings.map(listing => (
-          <li key={listing.id}>
-            <strong>{listing.title}</strong>
-            <p>{listing.description}</p>
-            {/* Add more listing details here */}
-          </li>
+          <div key={listing.id} className="col-md-6 col-lg-4 mb-4">
+            <div className="card">
+              <img src={listing.media} className="card-img-top" alt="Property Image" />
+              <div className="card-body">
+                <h5 className="card-title">{listing.title}</h5>
+                <p className="card-text">{listing.description}</p>
+                <p className="card-text">Rent: {listing.rent}</p>
+                <p className="card-text">Location: {listing.place}</p>
+                <p className="card-text">Utilities: {listing.utilities}</p>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
