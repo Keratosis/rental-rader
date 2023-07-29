@@ -1,0 +1,50 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
+Flask-2.3.2 
+Flask-Migrate-4.0.4
+ Flask-SQLAlchemy-3.0.5
+  Jinja2-3.1.2 
+  Mako-1.2.4 
+  MarkupSafe-2.1.3 
+  SQLAlchemy-2.0.19
+   Werkzeug-2.3.6 
+   alembic-1.11.1 
+   blinker-1.6.2 
+   click-8.1.6 
+   greenlet-2.0.2
+    itsdangerous-2.1.2
+     typing-extensions-4.7.1
+
+export FLASK_APP=app.py
+export FLASK_RUN_PORT=5900
+flask db revision --autogenerate -m 'Create user table'
+ flask db upgrade
+ pip install SQLAlchemy-serializer
+
+
+   # {
+            #     'id': property.id,
+            #     'property_type': property.property_type,
+            #     'property_category': property.property_category,
+            #     'bedrooms': property.bedrooms,
+            #     'bathrooms': property.bathrooms,
+            #     'square_footage': property.square_footage,
+            #     'media': property.media,
+            #     'furnished': property.furnished,
+            #     'description': property.description,
+            #     'location_details': property.location_details,
+            #     'landlord_name': property.landlord_name,
+            #     'contact_phone': property.contact_phone,
+            #     'contact_email': property.contact_email,
+            #     'preferred_contact_method': property.preferred_contact_method,
+            #     'additional_details': property.additional_details,
+            # }
