@@ -5,8 +5,8 @@ import Boxes from './Boxes'
 function Homepage() {
   return (
     <div>
-   <Boxes/>
-
+    <Boxes/> 
+    <h1>hey whats up</h1>
 
     </div>
   )
