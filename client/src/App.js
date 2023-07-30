@@ -8,6 +8,9 @@ import Login from "./components/Login";
 import Footer from "./components/Footer";
 import './App.css'
 import Search from "./components/Search";
+import Tenantsignup from "./components/Tenantsignup";
+import Ownersignup from "./components/Ownersignup";
+
 
 
 
@@ -24,6 +27,10 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/Tenantsignup" element={<Tenantsignup />} />
+          <Route path="/Ownersignup" element={<Ownersignup />} />
+
+
         </Routes>
       </div>
       <Footer />

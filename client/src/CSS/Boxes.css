@@ -1,5 +1,4 @@
 
-/* Styling for the container */
 
 .container {
     display: flex;
@@ -15,8 +14,7 @@
    
 
   }
-  
-  /* Styling for the boxes */
+ 
   .box {
     width: 450px;
     height: 450px;
