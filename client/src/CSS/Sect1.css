@@ -1,32 +1,38 @@
 /* Assuming you have a CSS file or you can use inline styles */
+.horizontal-container {
+  display: flex;
+  overflow-x: auto; /* Add this to enable horizontal scrolling if the content exceeds the container width */
+  /* Add more styling for the horizontal-container if needed */
+}
+
 .section2 {
-  padding: 20px;
+  display: flex;
+  height: 250px
   /* Add more styling for the section2 if needed */
 }
 
-.small-container-wrapper {
-  display: flex;
-  justify-content: space-between;
-  /* Add more styling for the wrapper if needed */
-}
-
 .small-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 10px;
+  text-align: center;
+  width: 200px; /* Set the width of the rectangle */
+  height: 220px;
+  background-color: rgb(161, 153, 153);
   /* Add more styling for the small-container if needed */
 }
 
-.small-container img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
-  /* Add more styling for the image if needed */
+.rectangle {
+  width: 200px; /* Set the width of the rectangle */
+  height: 150px; /* Set the height of the rectangle */
+  background-color: #f0f0f0; /* Add your desired background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px; /* Add border-radius to make it rounded */
+  overflow: hidden; /* Hide the overflow of the image */
 }
 
-.small-container p {
-  margin-top: 10px;
-  text-align: center;
-  /* Add more styling for the text if needed */
+.rectangle img {
+  width: 100%; /* Make the image fill the container */
+  height: 100%; /* Make the image fill the container */
+  object-fit: cover; /* Maintain the aspect ratio of the image */
 }

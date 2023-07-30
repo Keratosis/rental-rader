@@ -14,7 +14,7 @@ function Header() {
             <li className="nav-item">
               <Link className="nav-link active" to="/">Home</Link>
             </li>
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Find a House
               </a>
@@ -23,8 +23,8 @@ function Header() {
                 <li><a className="dropdown-item" href="#">Another action</a></li>
                 <li><a className="dropdown-item" href="#">Something else here</a></li>
               </ul>
-            </li>
-            <li className="nav-item dropdown">
+            </li> */}
+            {/* <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Why Us
               </a>
@@ -34,6 +34,9 @@ function Header() {
                 <li><a className="dropdown-item" href="#">Reviews</a></li>
                 <li><a className="dropdown-item" href="#">Benefits</a></li>
               </ul>
+            </li> */}
+            <li className="nav-item">
+              <Link className="nav-link" to="/search">Search</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/s">Listings</Link>

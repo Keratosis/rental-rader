@@ -11,14 +11,22 @@ function Sect1() {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
+  
   return (
-    <div className="section2">
-      {sect1.map((item) => (
-        <div key={item.id} className="small-container">
-          <img src={item.media} alt="Image" />
-          <p>{item.title}</p>
-        </div>
-      ))}
+    <div className="horizontal-container">
+      
+      <div className="section2">
+      
+        {sect1.map((item) => (
+          
+          <div key={item.id} className="small-container">
+            <div className="rectangle">
+              <img src={item.media} alt="Image" />
+            </div>
+            <p>{item.title}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

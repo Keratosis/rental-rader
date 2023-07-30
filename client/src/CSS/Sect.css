@@ -1,9 +1,9 @@
-/* Assuming you have a CSS file or you can use inline styles */
+
 .section {
   display: flex;
   justify-content: space-between;
   margin: 5px;
-  /* Add more styling for the section if needed */
+
 }
 
 .image-container,
@@ -14,9 +14,9 @@
 .image-container img {
   width: 100%;
   height: auto;
-  max-width: 100%; /* Image will fit the container on the left side */
+  max-width: 100%; 
   display: block;
-  /* Add more styling for the image as needed */
+  
 }
 
 .text-container {
@@ -39,3 +39,4 @@
   font-size: 18px;
   color: #555; 
 }
+
