@@ -8,17 +8,18 @@ from sqlalchemy_serializer import SerializerMixin
 
 
 
+
 db = SQLAlchemy()
  
-class User(db.Model,SerializerMixin):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String)
     email = db.Column(db.String)
     hashed_password = db.Column(db.String)
     role = db.Column(db.String)
-    registration_date =  db.Column(db.DateTime, server_default =db.func.now())
-    
+    registration_date = db.Column(db.DateTime, server_default=db.func.now())
+
     #relationship
     properties = relationship('Property', backref='user')
     reviewer = relationship('Review', backref='userx')

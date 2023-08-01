@@ -12,7 +12,6 @@ def seed_data():
     Review.query.delete()
     UserFavoriteProperty.query.delete()
 
-    # Seed data for users
     user1 = User(username='braxton', email='braxton@example.com', hashed_password='123456', role='tenant')
     user2 = User(username='shaffie', email='shaffie@example.com', hashed_password='123456', role='landlord')
 

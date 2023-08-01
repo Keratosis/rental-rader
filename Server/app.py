@@ -1,8 +1,10 @@
 #imports
-from flask import Flask, make_response,request
+from flask import Flask, make_response,request,jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse, abort
 from datetime import datetime
+import bcrypt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty 
 
 # initiasing app
@@ -10,10 +12,13 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = '332nsdbd993h3bd84920'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = '3dw72g32@#!'
 
 migrate =Migrate(app,db) 
 db.init_app(app)
 api = Api(app)
+jwt = JWTManager(app)
+
 
 
 @app.route("/") 
@@ -23,18 +28,104 @@ def home_page():
 
 class UserResource(Resource):
     def get(self):
-        user_list = [{'id': user.id, 
-                      'name': user.username,
-                      'email': user.email, 
-                      'role': user.role
-                      } 
-                     for user in User.query.all()]
-        # user_list1= [ user.to_dict() for user in User.query.all()]
-        responce = make_response(
-                                user_list,
-                                20)      
-        return responce
+        user_list = [{
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'hashed_password': user.hashed_password,
+            'role': user.role,
+            'registration_date': user.registration_date.isoformat()  
+        } for user in User.query.all()]
 
+        return user_list, 200
+
+    def post(self):
+        data = request.get_json()
+
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('hashed_password')
+        role = data.get('role')
+        
+        #existing data
+        
+
+        password = data.get('hashed_password')
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        new_user = User(username=username, email=email, hashed_password=hashed_password, role=role)
+        db.session.add(new_user)
+        db.session.commit()
+
+        response_data = {
+            'message': 'User created successfully',
+            'user': {
+                'id': new_user.id,
+                'username': new_user.username,
+                'email': new_user.email,
+                'hashed_password': new_user.hashed_password,
+                'role': new_user.role,
+                'registration_date': new_user.registration_date.isoformat()  
+            }
+        }
+        return response_data, 201
+    
+class UserResourceId(Resource):
+    def get(self, user_id):
+        user = User.query.get(user_id)
+        if user:
+            user_data = user.to_dict()  
+            return user_data, 200
+        else:
+            return {'message': 'User not found'}, 404
+
+    def patch(self, user_id):
+        user = User.query.get(user_id)
+        if user:
+            data = request.get_json()
+            # Update user attributes based on the data received in the request
+            user.username = data.get('username', user.username)
+            user.email = data.get('email', user.email)
+            user.hashed_password = data.get('hashed_password', user.hashed_password)
+            user.role = data.get('role', user.role)
+            db.session.commit()
+            return {'message': 'User updated successfully'}, 200
+        else:
+            return {'message': 'User not found'}, 404
+
+    def delete(self, user_id):
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return {'message': 'User deleted successfully'}, 200
+        else:
+            return {'message': 'User not found'}, 404
+
+class CheckUsernameAndEmail(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        email = data.get('email')
+
+        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+
+        response_data = {
+            'usernameExists': False,
+            'emailExists': False,
+        }
+
+        if existing_user:
+            if existing_user.username == username:
+                response_data['usernameExists'] = True
+            if existing_user.email == email:
+                response_data['emailExists'] = True
+
+        return response_data
+
+
+# Add the resource to the API with the desired endpoint
+api.add_resource(CheckUsernameAndEmail, '/check_username_and_email')
 
 #property access
 class PropertyResource(Resource):
@@ -619,6 +710,7 @@ class FavoriteId(Resource):
 
 
 api.add_resource(UserResource, '/users')
+api.add_resource(UserResourceId, '/users/<int:user_id>')
 api.add_resource(LocationResource, '/locations')
 api.add_resource(PropertyResource, '/properties')
 api.add_resource(PropertyResourceId, '/properties/<int:id>')
