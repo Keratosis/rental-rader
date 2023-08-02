@@ -3,12 +3,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy_serializer import SerializerMixin
 
-
-
-
-
-
-
 db = SQLAlchemy()
  
 class User(db.Model, SerializerMixin):
@@ -144,4 +138,3 @@ class RentalTerms(db.Model):
 
     def __repr__(self):
         return f"<RentalTerms(id={self.id}, rental_price={self.rental_price}, security_deposit={self.security_deposit})>"
-

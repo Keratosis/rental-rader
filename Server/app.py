@@ -325,12 +325,6 @@ class PropertyResourceId(Resource):
         
 
 
-        
-
-
-
-
-
 class ListingResource(Resource):
     def get(self):
         listings = Listing.query.all()
@@ -662,39 +656,7 @@ class Favorite(Resource):
             }, 201  # 201 Created status code
         else:
             return {'message': 'Invalid JSON data'}, 400
-
 class FavoriteId(Resource):
-    # def patch(self, id):
-    #     data = request.get_json()
-    #     if data:
-    #         user_fav_property = UserFavoriteProperty.query.get(id)
-    #         if user_fav_property:
-    #             # Update the UserFavoriteProperty attributes based on the provided data
-    #             if 'user_id' in data:
-    #                 user_fav_property.user_id = data['user_id']
-    #             if 'listing_id' in data:
-    #                 user_fav_property.listing_id = data['listing_id']
-    #             if 'property_id' in data:
-    #                 user_fav_property.property_id = data['property_id']
-
-    #             # Commit changes to the database
-    #             db.session.commit()
-
-    #             # Prepare the success message
-    #             success_message = f"UserFavoriteProperty with ID {id} has been successfully updated."
-
-    #             return {
-    #                 'message': success_message,
-    #                 'id': user_fav_property.id,
-    #                 'user_id': user_fav_property.user_id,
-    #                 'listing_id': user_fav_property.listing_id,
-    #                 'property_id': user_fav_property.property_id,
-    #             }, 200
-    #         else:
-    #             return {'message': 'UserFavoriteProperty not found'}, 404
-    #     else:
-    #         return {'message': 'Invalid JSON data'}, 400
-
     def delete(self, id):
         user_fav_property = UserFavoriteProperty.query.get(id)
         if user_fav_property:
@@ -704,9 +666,19 @@ class FavoriteId(Resource):
             return {'message': 'UserFavoriteProperty deleted successfully'}, 200
         else:
             return {'message': 'UserFavoriteProperty not found'}, 404
-
-
-
+        
+    def get_by_id(self, id):
+        user_fav_property = UserFavoriteProperty.query.get(id)
+        if user_fav_property:
+            # Return the favorite property details as a dictionary
+            return {
+                'id': user_fav_property.id,
+                'user_id': user_fav_property.user_id,
+                'listing_id': user_fav_property.listing_id,
+                'property_id': user_fav_property.property_id,
+            }, 200
+        else:
+            return {'message': 'UserFavoriteProperty not found'}, 404
 
 
 api.add_resource(UserResource, '/users')
