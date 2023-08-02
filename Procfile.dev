@@ -1,5 +1,5 @@
-web: PORT=4640 npm start --prefix client
-api: gunicorn -b 127.0.0.1:5640 --chdir ./Server app:app
+web: PORT=4840 npm start --prefix client
+api: gunicorn -b 127.0.0.1:5870 --chdir ./Server app:app
 
 
 

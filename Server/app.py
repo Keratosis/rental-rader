@@ -2,10 +2,12 @@
 from flask import Flask, make_response,request,jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse, abort
-from datetime import datetime
-import bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required,  get_jwt_identity, current_user
 from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty 
+
+
 
 # initiasing app
 app = Flask(__name__)
@@ -13,18 +15,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = '332nsdbd993h3bd84920'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = '3dw72g32@#!'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)  # Access token expiration time (1 hour in this example)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 
 migrate =Migrate(app,db) 
 db.init_app(app)
 api = Api(app)
+
 jwt = JWTManager(app)
 
 
 
-@app.route("/") 
-@app.route("/home")
-def home_page():
-    return '<h1>Home</h1>'
 
 class UserResource(Resource):
     def get(self):
@@ -34,11 +35,19 @@ class UserResource(Resource):
             'email': user.email,
             'hashed_password': user.hashed_password,
             'role': user.role,
-            'registration_date': user.registration_date.isoformat()  
+            'registration_date': user.registration_date.strftime("%Y-%m-%d %H:%M:%S")  
         } for user in User.query.all()]
 
-        return user_list, 200
+        # Include the access token in the response data
+        access_token = create_access_token(identity="some_identity")  # You can pass the user's identity here
+        response_data = {
+            'users': user_list,
+            'access_token': access_token
+        }
 
+        return response_data, 200
+
+    
     def post(self):
         data = request.get_json()
 
@@ -46,16 +55,24 @@ class UserResource(Resource):
         email = data.get('email')
         password = data.get('hashed_password')
         role = data.get('role')
-        
-        #existing data
-        
 
-        password = data.get('hashed_password')
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        # Check if the email or username already exist in the backend
+        existing_email_user = User.query.filter_by(email=email).first()
+        existing_username_user = User.query.filter_by(username=username).first()
+
+        if existing_email_user:
+            return {'message': 'Email already exists'}, 409
+
+        if existing_username_user:
+            return {'message': 'Username already exists'}, 409
+
+        hashed_password = generate_password_hash(password)
 
         new_user = User(username=username, email=email, hashed_password=hashed_password, role=role)
         db.session.add(new_user)
         db.session.commit()
+
+        access_token = create_access_token(identity=new_user.id)
 
         response_data = {
             'message': 'User created successfully',
@@ -65,17 +82,34 @@ class UserResource(Resource):
                 'email': new_user.email,
                 'hashed_password': new_user.hashed_password,
                 'role': new_user.role,
-                'registration_date': new_user.registration_date.isoformat()  
-            }
+                'registration_date': new_user.registration_date.strftime("%Y-%m-%d %H:%M:%S")
+            },
+            'access_token': access_token  # generated access token
         }
         return response_data, 201
-    
+
+
+
+
+ 
+ 
+ 
+ 
+ 
 class UserResourceId(Resource):
     def get(self, user_id):
         user = User.query.get(user_id)
         if user:
-            user_data = user.to_dict()  
-            return user_data, 200
+            user_data = user.to_dict()
+
+            # addeds access token in the response data
+            access_token = create_access_token(identity=user.id)  
+            response_data = {
+                'user': user_data,
+                'access_token': access_token
+            }
+
+            return response_data, 200
         else:
             return {'message': 'User not found'}, 404
 
@@ -83,10 +117,15 @@ class UserResourceId(Resource):
         user = User.query.get(user_id)
         if user:
             data = request.get_json()
-            # Update user attributes based on the data received in the request
+
+            # Hash the new password before updating it in the database
+            new_password = data.get('hashed_password')
+            if new_password:
+                hashed_password = generate_password_hash(new_password)
+                user.hashed_password = hashed_password
+
             user.username = data.get('username', user.username)
             user.email = data.get('email', user.email)
-            user.hashed_password = data.get('hashed_password', user.hashed_password)
             user.role = data.get('role', user.role)
             db.session.commit()
             return {'message': 'User updated successfully'}, 200
@@ -126,6 +165,53 @@ class CheckUsernameAndEmail(Resource):
 
 # Add the resource to the API with the desired endpoint
 api.add_resource(CheckUsernameAndEmail, '/check_username_and_email')
+
+class UserLoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+
+        email = data.get('email')
+        password = data.get('password')  # Use 'password' instead of 'hashed_password'
+
+        if not email or not password:
+            return {'message': 'Email and password are required'}, 400
+
+        # Check if the user with the provided email exists
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return {'message': 'User not found'}, 404
+
+        # Verify the provided password against the hashed password in the database
+        if not bcrypt.checkpw(password.encode('utf-8'), user.hashed_password.encode('utf-8')):
+            return {'message': 'Invalid credentials'}, 401
+
+        # Generate access token if the login is successful
+        access_token = create_access_token(identity=user.id)
+
+        response_data = {
+            'message': 'Login successful',
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'role': user.role,
+                'registration_date': user.registration_date.isoformat()
+            },
+            'access_token': access_token
+        }
+
+        return response_data, 200
+
+api.add_resource(UserLoginResource, '/login')
+
+
+
+class ProtectedResource(Resource):
+    @jwt_required()
+    def get(self):
+        return {'message': 'You are authorized to access this protected resource.'}, 200
+    
+api.add_resource(ProtectedResource, '/protected')
 
 #property access
 class PropertyResource(Resource):
@@ -269,24 +355,21 @@ class PropertyResourceId(Resource):
                 return {'message': 'Property not found'}, 404
     
     def patch(self, id):
-        # Parse the request data for updating the property
-        
-        # Get the JSON data from the request
         data = request.get_json()
 
         # Query the database for the property with the given ID
         property = Property.query.get(id)
 
         if property:
-            # Update the property attributes based on the provided data
+           
             for key, value in data.items():
                 if value is not None:
                     setattr(property, key, value)
 
-            # Commit changes to the database
+            
             db.session.commit()
 
-            # Prepare the success message
+            
             success_message = f"Property with ID {id} has been successfully updated."
 
             return {
@@ -312,11 +395,11 @@ class PropertyResourceId(Resource):
         
         
     def delete(self, id):
-        # Query the database for the property with the given ID
+       
         property = Property.query.get(id)
 
         if property:
-            # Delete the property from the database
+            
             db.session.delete(property)
             db.session.commit()
             return {'message': 'Property deleted successfully'}, 200
@@ -332,6 +415,7 @@ class PropertyResourceId(Resource):
 
 
 class ListingResource(Resource):
+    @jwt_required()
     def get(self):
         listings = Listing.query.all()
         listing_list = [

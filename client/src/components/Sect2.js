@@ -1,18 +1,43 @@
 import React, { useEffect ,useState} from 'react'
 
 function Sect2() {
-    const [sect2, setSect2] = useState([]);
+  const [sect2, setListings] = useState([]);
 
-    useEffect(() => {
-      fetch('/listings')
-        .then((res) => res.json())
-        .then((data) => setSect2(data))
-        .catch((error) => console.error('Error fetching data:', error));
-    }, []);
+  useEffect(() => {
+    // Function to fetch the listings using the token
+    const fetchListings = async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        console.error('Token not found. User is not authenticated.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/listings', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch listings.');
+        }
+
+        const data = await response.json();
+        setListings(data); // Updating the 'listings' state with the fetched data
+        console.log(data); // Logging the fetched data to the console
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+      }
+    };
+
+    fetchListings();
+  }, []);
 
     return (
         <div className="horizontal-container">
-          <div className="section2">
+           <div className="section2">
             {sect2.map((item) => (
               <div key={item.id} className="small-container">
                 <div className="rectangle">
@@ -21,7 +46,7 @@ function Sect2() {
                 <p>{item.title}</p>
               </div>
             ))}
-          </div>
+          </div> 
         </div>
       );
     }

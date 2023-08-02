@@ -115,7 +115,7 @@ function Tenantsignup() {
 
       const createUserData = await createUserResponse.json();
       console.log('User created successfully:', createUserData);
-      navigate('/'); // takes you to the home page after successful signup
+      navigate('/login'); // takes you to the home page after successful signup
     
     } catch (error) {
       console.error('Error creating user:', error);

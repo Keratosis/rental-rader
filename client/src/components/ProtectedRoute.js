@@ -1,15 +1,16 @@
-import React from 'react'
+import React from 'react';
+import {  Navigate } from 'react-router-dom';
 
-function ProtectedRoute() {
-  return (
-    <div>
-        
-        ProtectedRoute
-        
-        
-        
-   </div>
-  )
-}
+const ProtectedRoute = ({ component: Component }) => {
+  const isLoggedIn = !!localStorage.getItem('access_token');
 
-export default ProtectedRoute
+  if (!isLoggedIn) {
+    // Redirect to the login page if the user is not logged in
+    return <Navigate to="/login" />;
+  }
+
+  // If the user is logged in, render the protected component
+  return <Component />;
+};
+
+export default ProtectedRoute;
