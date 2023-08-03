@@ -10,6 +10,7 @@ import './App.css'
 import Search from "./components/Search";
 import Tenantsignup from "./components/Tenantsignup";
 import Ownersignup from "./components/Ownersignup";
+import Propertydetails from "./components/Propertydetails";
 
 
 
@@ -29,8 +30,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/Tenantsignup" element={<Tenantsignup />} />
           <Route path="/Ownersignup" element={<Ownersignup />} />
-
-
+          <Route path="/Propertydetails" element={<Propertydetails />} />
         </Routes>
       </div>
       <Footer />

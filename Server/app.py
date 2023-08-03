@@ -4,9 +4,11 @@ from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse, abort
 from datetime import datetime
 from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty 
+from flask_cors import CORS
 
 # initiasing app
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = '332nsdbd993h3bd84920'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
