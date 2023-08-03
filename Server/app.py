@@ -1,9 +1,8 @@
 #imports
 from flask import Flask, make_response,request,jsonify
 from flask_migrate import Migrate
-from flask_restful import Api, Resource, reqparse, abort
+from flask_restful import Api, Resource
 from datetime import datetime, timedelta
-from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required,  get_jwt_identity, current_user
 from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty 
 import bcrypt
@@ -120,6 +119,17 @@ class UserResourceId(Resource):
             return {'message': 'User updated successfully'}, 200
         else:
             return {'message': 'User not found'}, 404
+        
+    def delete(self, user_id):
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return {'message': 'User deleted successfully'}, 200
+        else:
+            return {'message': 'User not found'}, 404
+
+        
 
 class CheckUsernameAndEmail(Resource):
     def post(self):
