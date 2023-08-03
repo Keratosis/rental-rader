@@ -3,9 +3,10 @@ from flask import Flask, make_response,request,jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse, abort
 from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required,  get_jwt_identity, current_user
 from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty 
+import bcrypt
 
 
 
@@ -35,28 +36,25 @@ class UserResource(Resource):
             'email': user.email,
             'hashed_password': user.hashed_password,
             'role': user.role,
-            'registration_date': user.registration_date.strftime("%Y-%m-%d %H:%M:%S")  
+            'registration_date': user.registration_date.isoformat()  
         } for user in User.query.all()]
 
-        # Include the access token in the response data
-        access_token = create_access_token(identity="some_identity")  # You can pass the user's identity here
+       
         response_data = {
-            'users': user_list,
-            'access_token': access_token
+            'users': user_list
         }
 
         return response_data, 200
 
-    
     def post(self):
         data = request.get_json()
 
         username = data.get('username')
         email = data.get('email')
-        password = data.get('hashed_password')
+        password = data.get('password')  
         role = data.get('role')
 
-        # Check if the email or username already exist in the backend
+        # Check if the email or username already exists in the backend
         existing_email_user = User.query.filter_by(email=email).first()
         existing_username_user = User.query.filter_by(username=username).first()
 
@@ -66,13 +64,12 @@ class UserResource(Resource):
         if existing_username_user:
             return {'message': 'Username already exists'}, 409
 
-        hashed_password = generate_password_hash(password)
+        # Use generate_password_hash directly to hash the password
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        new_user = User(username=username, email=email, hashed_password=hashed_password, role=role)
+        new_user = User(username=username, email=email, hashed_password=hashed_password, role=role, registration_date=datetime.utcnow())
         db.session.add(new_user)
         db.session.commit()
-
-        access_token = create_access_token(identity=new_user.id)
 
         response_data = {
             'message': 'User created successfully',
@@ -80,21 +77,11 @@ class UserResource(Resource):
                 'id': new_user.id,
                 'username': new_user.username,
                 'email': new_user.email,
-                'hashed_password': new_user.hashed_password,
                 'role': new_user.role,
-                'registration_date': new_user.registration_date.strftime("%Y-%m-%d %H:%M:%S")
-            },
-            'access_token': access_token  # generated access token
+                'registration_date': new_user.registration_date.isoformat()
+            }
         }
         return response_data, 201
-
-
-
-
- 
- 
- 
- 
  
 class UserResourceId(Resource):
     def get(self, user_id):
@@ -102,8 +89,8 @@ class UserResourceId(Resource):
         if user:
             user_data = user.to_dict()
 
-            # addeds access token in the response data
-            access_token = create_access_token(identity=user.id)  
+            # Include the access token in the response data
+            access_token = create_access_token(identity=user.id)  # You can pass the user's identity here
             response_data = {
                 'user': user_data,
                 'access_token': access_token
@@ -118,26 +105,19 @@ class UserResourceId(Resource):
         if user:
             data = request.get_json()
 
-            # Hash the new password before updating it in the database
-            new_password = data.get('hashed_password')
-            if new_password:
-                hashed_password = generate_password_hash(new_password)
-                user.hashed_password = hashed_password
-
+            # Update user attributes based on the data received in the request
             user.username = data.get('username', user.username)
             user.email = data.get('email', user.email)
             user.role = data.get('role', user.role)
+
+            # Update the password if a new one is provided
+            new_password = data.get('password')
+            if new_password:
+                hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                user.hashed_password = hashed_password
+
             db.session.commit()
             return {'message': 'User updated successfully'}, 200
-        else:
-            return {'message': 'User not found'}, 404
-
-    def delete(self, user_id):
-        user = User.query.get(user_id)
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return {'message': 'User deleted successfully'}, 200
         else:
             return {'message': 'User not found'}, 404
 
@@ -183,7 +163,7 @@ class UserLoginResource(Resource):
 
         # Verify the provided password against the hashed password in the database
         if not bcrypt.checkpw(password.encode('utf-8'), user.hashed_password.encode('utf-8')):
-            return {'message': 'Invalid credentials'}, 401
+            return {'message': 'Incorrect password try again'}, 401
 
         # Generate access token if the login is successful
         access_token = create_access_token(identity=user.id)
@@ -203,6 +183,10 @@ class UserLoginResource(Resource):
         return response_data, 200
 
 api.add_resource(UserLoginResource, '/login')
+
+
+
+
 
 
 
@@ -808,4 +792,4 @@ api.add_resource(FavoriteId, '/fav/<int:id>')
 
 
 if __name__ == '__main__':
-    app.run(port=5570,debug=True)
+    app.run(port=5587,debug=True)
