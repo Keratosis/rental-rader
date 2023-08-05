@@ -1,8 +1,8 @@
 """Create  tables
 
-Revision ID: 44050a500179
+Revision ID: ed8695906a6d
 Revises: 
-Create Date: 2023-07-29 01:07:31.219628
+Create Date: 2023-08-04 11:12:17.718432
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '44050a500179'
+revision = 'ed8695906a6d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -71,6 +71,17 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('payments',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('property_id', sa.Integer(), nullable=True),
+    sa.Column('amount', sa.Float(), nullable=True),
+    sa.Column('payment_method', sa.String(), nullable=True),
+    sa.Column('payment_date', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.ForeignKeyConstraint(['property_id'], ['properties.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('rental_terms',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('property_id', sa.Integer(), nullable=True),
@@ -112,6 +123,7 @@ def downgrade():
     op.drop_table('user_favorite_property')
     op.drop_table('review')
     op.drop_table('rental_terms')
+    op.drop_table('payments')
     op.drop_table('properties')
     op.drop_table('listing')
     op.drop_table('users')
