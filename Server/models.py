@@ -8,47 +8,87 @@ from sqlalchemy_serializer import SerializerMixin
 
 
 
+
 db = SQLAlchemy()
  
-class User(db.Model,SerializerMixin):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String)
     email = db.Column(db.String)
     hashed_password = db.Column(db.String)
-    role = db.Column(db.String)
-    registration_date =  db.Column(db.DateTime, server_default =db.func.now())
-    
-    #relationship
+    _role = db.Column('role', db.String)  # Rename the column to '_role'
+    registration_date = db.Column(db.DateTime, server_default=db.func.now())
+
+    # Relationship
     properties = relationship('Property', backref='user')
     reviewer = relationship('Review', backref='userx')
     favorite_properties = relationship('UserFavoriteProperty', backref='user')
 
     serialize_rules = ('-properties.user', '-favorite_properties.user', '-reviews.user',)
 
-    
+    VALID_ROLES = {'admin', 'tenant', 'owner'}
+
+    def __init__(self, username, email, hashed_password, role):
+        self.username = username
+        self.email = email
+        self.hashed_password = hashed_password
+        self.role = role  # Assign the role using the property setter
+
+    @property
+    def role(self):
+        return self._role
+
+    @role.setter
+    def role(self, value):
+        if value not in self.VALID_ROLES:
+            raise ValueError(f"Invalid role. Allowed roles are: {', '.join(self.VALID_ROLES)}")
+        self._role = value
+
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}', email='{self.email}', role='{self.role}')>"
 
-class Property(db.Model,SerializerMixin):
+class Property(db.Model, SerializerMixin):
     __tablename__ = 'properties'
     id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.Integer, ForeignKey('location.id'))
+    country = db.Column(db.String)  
+    city_town = db.Column(db.String)  
+    neighborhood_area = db.Column(db.String)
+    address = db.Column(db.String)
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
     property_type = db.Column(db.String)
     property_category = db.Column(db.String)
+    property_rent = db.Column(db.Float, default=0.0)
     bedrooms = db.Column(db.Integer)
     bathrooms = db.Column(db.Integer)
     square_footage = db.Column(db.Integer)
-    media = db.Column(db.String)
     furnished = db.Column(db.String, default='Y')
     description = db.Column(db.String)
     location_details = db.Column(db.String)
-    landlord_name = db.Column(db.String)
+    property_owner_name = db.Column(db.String)
+    property_owner_photo = db.Column(db.String)
     contact_phone = db.Column(db.String)
     contact_email = db.Column(db.String)
+    contact_whatsapp = db.Column(db.String)
     preferred_contact_method = db.Column(db.String)
     additional_details = db.Column(db.String)
+
+    # Media fields
+    main_image = db.Column(db.String)
+    images = db.Column(db.String)
+    house_tour_video = db.Column(db.String)
+    property_documents = db.Column(db.String)
+
+    # Social media accounts
+    facebook = db.Column(db.String)
+    twitter = db.Column(db.String)
+    instagram = db.Column(db.String)
+    linkedin = db.Column(db.String)
+    other_social_media = db.Column(db.String)
+
+    # Amenities field
+    amenities = db.Column(db.String)
 
     #relationship
     rental_terms = relationship('RentalTerms', backref='property')
@@ -57,6 +97,28 @@ class Property(db.Model,SerializerMixin):
 
     def __repr__(self):
         return f"<Property(id={self.id}, property_type='{self.property_type}', bedrooms={self.bedrooms}, bathrooms={self.bathrooms})>"
+    
+    
+class Payment(db.Model):
+    __tablename__ = 'payments'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    property_id = db.Column(db.Integer, db.ForeignKey('properties.id'))
+    amount = db.Column(db.Float)
+    payment_date = db.Column(db.DateTime, server_default=db.func.now())
+    payment_method = db.Column(db.String(50))
+
+    # Relationship columns
+    user = db.relationship('User', backref='payments')
+    property = db.relationship('Property', backref='payments')
+
+    def __init__(self, user_id, property_id, amount, payment_method):
+        self.user_id = user_id
+        self.property_id = property_id
+        self.amount = amount
+        self.payment_method = payment_method
+
+
 
 class Listing(db.Model):
     __tablename__ = 'listing'
@@ -96,6 +158,8 @@ class Review(db.Model):
 
     def __repr__(self):
         return f"<Review(id={self.id}, user_id={self.user_id}, listing_id={self.listing_id}, property_id={self.property_id})>"
+    
+    
 
 class UserFavoriteProperty(db.Model):
     __tablename__ = 'user_favorite_property'
