@@ -112,7 +112,7 @@ const Propertydetails = () => {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Rent per Month</Form.Label>
+          <Form.Label>Rent per Month in $</Form.Label>
           {/* <Form.Control
             type="number"
             placeholder="Enter rent per month"
