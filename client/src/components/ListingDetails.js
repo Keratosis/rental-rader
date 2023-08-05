@@ -1,10 +1,11 @@
-// PropertyDetails.js
+// ListingDetails.js
+
 import React, { useEffect, useState } from 'react';
-import '../CSS/PropertyDetails.css'; // Import your custom CSS file
+import '../CSS/ListingDetails.css'; // Import your custom CSS file
 import { useParams } from 'react-router-dom';
 
-function PropertyDetails({ match }) {
-  const [propertyDetails, setPropertyDetails] = useState({}); // State to store fetched property details
+function ListingDetails({ match }) {
+  const [listingDetails, setListingDetails] = useState({}); // State to store fetched listing details
   const [formData, setFormData] = useState({
     email: '',
     address: '',
@@ -12,22 +13,29 @@ function PropertyDetails({ match }) {
     review: '',
   });
 
-  const [similarProperties, setSimilarProperties] = useState([]); // State to store fetched similar listings
-  const { id: propertyId } = useParams();
- // Extracting the listing ID from the URL params
+  const [similarListings, setSimilarListings] = useState([]); // State to store fetched similar listings
+  const listingId =  useParams().id; // Extracting the listing ID from the URL params
 
   useEffect(() => {
-    // Fetching listings details from the server using property ID
-    fetch(`/properties/${propertyId}`)
+    // Fetching listings details from the server using listing ID
+    fetch(`/listings/${listingId}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        setPropertyDetails(data);
+        setListingDetails(data);
       })
       .catch(error => {
-        console.error('Error fetching property details:', error);
+        console.error('Error fetching listing details:', error);
       });
-  }, [propertyId]);
+
+    fetch(`/similarListings/${listingId}`) 
+      .then(res => res.json())
+      .then(data => {
+        setSimilarListings(data);
+      })
+      .catch(error => {
+        console.error('Error fetching similar listings:', error);
+      });
+  }, [listingId]);
  
 
   // Function to handle the image carousel
@@ -80,9 +88,9 @@ function PropertyDetails({ match }) {
   };
 
   // Function to render the listings features as list items
-  const renderPropertyFeatures = () => {
-    if (propertyDetails.features && propertyDetails.features.length > 0) {
-      return propertyDetails.features.map((feature, index) => (
+  const renderListingFeatures = () => {
+    if (listingDetails.features && listingDetails.features.length > 0) {
+      return listingDetails.features.map((feature, index) => (
         <li key={index}>{feature}</li>
       ));
     } else {
@@ -91,13 +99,13 @@ function PropertyDetails({ match }) {
   };
 
   return (
-    <div className="property-details-container">
+    <div className="listing-details-container">
       {/* Section 1: Images */}
       <div className="image-carousel">
         <button onClick={handlePreviousImage}>&lt;</button>
         {/* Replacing the image source with the actual image URLs */}
-        {propertyDetails.images &&
-          propertyDetails.images.map((image, index) => (
+        {listingDetails.images &&
+          listingDetails.images.map((image, index) => (
             <img key={index} src={image} alt={`Listing ${index + 1}`} />
           ))}
         {/* Add more images here */}
@@ -106,60 +114,60 @@ function PropertyDetails({ match }) {
 
       {/* Section 2: Overview */}
       <div className="overview">
-        <h2>{propertyDetails.title}</h2>
-        <p>{propertyDetails.address}</p>
-        <p>Rent: {propertyDetails.property_rent}</p>
-        <p>Property Type: {propertyDetails.property_type}</p>
-        <p>Bedrooms: {propertyDetails.bedrooms}</p>
-        <p>Bathrooms: {propertyDetails.bathrooms}</p>
-        <p>Garage: {propertyDetails.garage}</p>
-        <p>Date Posted: {propertyDetails.datePosted}</p>
+        <h2>{listingDetails.title}</h2>
+        <p>{listingDetails.address}</p>
+        <p>Rent: {listingDetails.rent}</p>
+        <p>Property Type: {listingDetails.listing_type}</p>
+        <p>Bedrooms: {listingDetails.bedrooms}</p>
+        <p>Bathrooms: {listingDetails.bathrooms}</p>
+        <p>Garage: {listingDetails.garage}</p>
+        <p>Date Posted: {listingDetails.datePosted}</p>
       </div>
 
       {/* Section 3: Description */}
       <div className="description">
         <h2>Description</h2>
-        <p>{propertyDetails.description}</p>
+        <p>{listingDetails.description}</p>
       </div>
 
-      {/* Section 4: Property Owner */}
+      {/* Section 4: Listing Owner */}
       <div className="property-owner">
-        <h2>Property Owner Contact Information</h2>
-        <p>{propertyDetails.landlord_name}</p>
-        <p>{propertyDetails.contact_phone}</p>
-        <p>{propertyDetails.contact_email}</p>
+        <h2>Listing Owner Contact Information</h2>
+        <p>{listingDetails.landlord_name}</p>
+        <p>{listingDetails.contact_phone}</p>
+        <p>{listingDetails.contact_email}</p>
       </div>
 
       {/* Section 5: Address */}
       <div className="address">
         <h2>Address</h2>
-        <p>Address: {propertyDetails.address}</p>
-        <p>City: {propertyDetails.city}</p>
-        <p>Neighbourhood: {propertyDetails.neighbourhood}</p>
-        <p>Country: {propertyDetails.country}</p>
-        <a href={propertyDetails.googleMapsLink} target="_blank" rel="noopener noreferrer">
+        <p>Address: {listingDetails.address}</p>
+        <p>City: {listingDetails.city}</p>
+        <p>Neighbourhood: {listingDetails.neighbourhood}</p>
+        <p>Country: {listingDetails.country}</p>
+        <a href={listingDetails.googleMapsLink} target="_blank" rel="noopener noreferrer">
           Open on Google Maps
         </a>
       </div>
 
-      {/* Section 6: Property Details */}
-      <div className="property-details">
-        <h2>Property Details</h2>
-        <p>Property ID: {propertyDetails.id}</p>
-        <p>Bathrooms: {propertyDetails.bathrooms}</p>
-        <p>Property Category: {propertyDetails.property_category}</p>
-        <p>Garages: {propertyDetails.garage}</p>
-        <p>Property Type: {propertyDetails.property_type}</p>
-        <p>Posted: {propertyDetails.datePosted}</p>
+      {/* Section 6: Listing Details */}
+      <div className="listing-details">
+        <h2>Listing Details</h2>
+        <p>Listings ID: {listingDetails.id}</p>
+        <p>Bathrooms: {listingDetails.bathrooms}</p>
+        <p>Listing Category: {listingDetails.listing_category}</p>
+        <p>Garages: {listingDetails.garage}</p>
+        <p>Listing Type: {listingDetails.listing_type}</p>
+        <p>Posted: {listingDetails.datePosted}</p>
         <h3>Features</h3>
-        <ul>{renderPropertyFeatures()}</ul>
+        <ul>{renderListingFeatures()}</ul>
       </div>
 
       {/* Section 7: House Video Tour */}
       <div className="house-video-tour">
         <h2>House Video Tour</h2>
         <video controls>
-          <source src={propertyDetails.videoURL} type="video/mp4" />
+          <source src={listingDetails.videoURL} type="video/mp4" />
           {/* Fallback message for browsers that do not support the video tag */}
           Your browser does not support the video tag.
         </video>
@@ -219,23 +227,23 @@ function PropertyDetails({ match }) {
       </form>
     </div>
 
-      Section 9: Similar Properties
-      <div className="similar-properties">
-        <h2>Similar Properties</h2>
-        {similarProperties.length > 0 ? (
-          similarProperties.map(property => (
-            <div key={property.id}>
-              <h3>{property.property_type}</h3>
-              <p>{property.address}</p>
-              <p>Rent: {property.property_rent}</p>
-              <p>Bedrooms: {property.bedrooms}</p>
-              <p>Bathrooms: {property.bathrooms}</p>
-              <p>Description: {property.description}</p>
-              <p>Landlord Name: {property.property_owner_name}</p>
+      Section 9: Similar Listings
+      <div className="similar-listings">
+        <h2>Similar Listings</h2>
+        {similarListings.length > 0 ? (
+          similarListings.map(listing => (
+            <div key={listing.id}>
+              <h3>{listing.listing_type}</h3>
+              <p>{listing.listing_details}</p>
+              <p>Rent: {listing.rent}</p>
+              <p>Bedrooms: {listing.bedrooms}</p>
+              <p>Bathrooms: {listing.bathrooms}</p>
+              <p>Description: {listing.description}</p>
+              <p>Landlord Name: {listing.landlord_name}</p>
             </div>
           ))
         ) : (
-          <p>No similar properties available</p>
+          <p>No similar listings available</p>
         )}
       </div>
     </div>
@@ -243,4 +251,4 @@ function PropertyDetails({ match }) {
   );
 };
 
-export default PropertyDetails;
+export default ListingDetails;

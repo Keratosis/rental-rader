@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import Listings from "./components/Listings";
+import ListingDetails from "./components/ListingDetails";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
@@ -13,6 +14,7 @@ import Ownersignup from "./components/Ownersignup";
 import PropertyDetails from "./components/PropertyDetails";
 import Properties from "./components/Properties";
 
+
 function App() {
   return (
     <div className="app-container">
@@ -21,11 +23,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/listings" element={<Listings />} />
+          <Route path="/ListingDetails/:id" element={<ListingDetails />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
           <Route path="/properties" element={<Properties />} />
-          <Route path="/PropertyDetails/:id" element={<PropertyDetails />} />
+          <Route path="/propertyDetails/:id" element={<PropertyDetails />} />
           <Route path="/Tenantsignup" element={<Tenantsignup />} />
           <Route path="/Ownersignup" element={<Ownersignup />} />
         </Routes>

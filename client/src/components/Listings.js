@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import '../CSS/Listings.css'; // Import your custom CSS file
 import { Link } from 'react-router-dom';
 
-function Listing() {
+function Listings() {
     const [listings, setListings] = useState([]);
-    const [favoriteProperties, setFavoriteProperties] = useState([]);
+    const [favoriteListings, setFavoriteListings] = useState([]);
     
     
     useEffect(() => {
@@ -16,21 +16,21 @@ function Listing() {
         });
     }, []);
     
-    const handleLikeProperty = async (listing) => {
-        if (favoriteProperties.some(favListing => favListing.id === listing.id)) {
-        // Unlike the property and remove it from favorites
-        setFavoriteProperties(prevFavorites => prevFavorites.filter(favListing => favListing.id !== listing.id));
+    const handleLikeListing = async (listing) => {
+        if (favoriteListings.some(favListing => favListing.id === listing.id)) {
+        // Unlike the listing and remove it from favorites
+        setFavoriteListings(prevFavorites => prevFavorites.filter(favListing => favListing.id !== listing.id));
         try {
             await fetch(`/fav/${listing.id}`, {
             method: 'DELETE',
             });
         } catch (error) {
-            console.error('Error removing property from favorites:', error);
+            console.error('Error removing listing from favorites:', error);
             // Handle error if needed
         }
         } else {
-        // Like the property and add it to favorites
-        setFavoriteProperties(prevFavorites => [...prevFavorites, listing]);
+        // Like the listing and add it to favorites
+        setFavoriteListings(prevFavorites => [...prevFavorites, listing]);
         try {
             await fetch('/fav', {
             method: 'POST',
@@ -40,7 +40,7 @@ function Listing() {
             body: JSON.stringify({ id: listing.id }), // Send the listing ID in the request body
             });
         } catch (error) {
-            console.error('Error adding property to favorites:', error);
+            console.error('Error adding listing to favorites:', error);
             // Handle error if needed
         }
         }
@@ -63,11 +63,11 @@ function Listing() {
                 <p className="custom-card-text">{listing.description}</p>
                 <p className="custom-card-text">Rent: {listing.rent}</p>
                 <p className="custom-card-text">Location: {listing.place}</p>
-                <p className="custom-card-text">Utilities: {listing.utilities} 
+                <p className="custom-card-text">Utilities: {listing.utilities}  </p>
                 <div className="card-buttons">
-                  <button onClick={() => handleLikeProperty(listing)}>
+                  <button onClick={() => handleLikeListing(listing)}>
                     {/* Conditionally render the heart icon based on whether it's a favorite or not */}
-                    {favoriteProperties.some(favProperty => favProperty.id === listing.id) ? (
+                    {favoriteListings.some(favListing => favListing.id === listing.id) ? (
                       <img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678087-heart-64.png"
                         className="heart-icon liked" 
                         alt="Heart Icon" 
@@ -81,9 +81,10 @@ function Listing() {
                     )}
                   </button>
                   {/* Use the Link component to redirect to the ListingDetails page */}
-                  <Link to={`/ListingDetails/${listing.id}`}>VIEW DETAILS</Link>
+                  <Link to={`/ListingDetails/${listing.id}`}>
+                    <button>Details</button>
+                  </Link>
                 </div>
-                </p>
               </div>
             </div>
           </div>
@@ -93,5 +94,4 @@ function Listing() {
   );
 }
 
-export default Listing
-
+export default Listings

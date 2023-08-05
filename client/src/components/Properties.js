@@ -9,11 +9,20 @@ function Properties() {
 
   useEffect(() => {
     fetch('/properties')
-      .then(res => res.json())
-      .then(data => {
-        setProperties(data);
-      });
-  }, []);
+        .then(res => res.json())
+        .then(data => {
+          console.log('Fetched data:', data);
+            if (Array.isArray(data)) {
+                setProperties(data);
+            } else {
+                console.error('Fetched data is not an array:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching properties:', error);
+        });
+}, []);
+
 
   const handleLikeProperty = async (property) => {
     if (favoriteProperties.some(favProperty => favProperty.id === property.id)) {
@@ -53,14 +62,14 @@ function Properties() {
           <div key={property.id} className="custom-col-md-6 custom-col-lg-4 custom-mb-4">
             <div className="custom-card custom-listing-card">
               <div className="image-container">
-                <img src={property.media} className="custom-card-img-top custom-property-img" alt="Property" />
+                <img src={property.main_image} className="custom-card-img-top custom-property-img" alt="Property" />
               </div>
               <div className="custom-card-body">
                 <h5 className="custom-card-title">{property.title}</h5>
                 <p className="custom-card-text">{property.description}</p>
-                <p className="custom-card-text">Rent: {property.rent}</p>
-                <p className="custom-card-text">Location: {property.place}</p>
-                <p className="custom-card-text">Utilities: {property.utilities}</p>
+                <p className="custom-card-text">Rent: {property.property_rent}</p>
+                <p className="custom-card-text">Location: {property.address}</p>
+                <p className="custom-card-text">Utilities: {property.amenities}</p>
                 <div className="card-buttons">
                   <button onClick={() => handleLikeProperty(property)}>
                     {/* Conditionally render the heart icon based on whether it's a favorite or not */}
@@ -78,7 +87,9 @@ function Properties() {
                     )}
                   </button>
                   {/* Use the Link component to redirect to the PropertyDetails page */}
-                  <Link to={`/PropertyDetails/${property.id}`}>VIEW DETAILS</Link>
+                  <Link to={`/propertyDetails/${property.id}`}>
+                    <button>Details</button>
+                  </Link>
                 </div>
               </div>
             </div>

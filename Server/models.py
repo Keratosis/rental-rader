@@ -15,38 +15,64 @@ class User(db.Model, SerializerMixin):
     registration_date = db.Column(db.DateTime, server_default=db.func.now())
 
     #relationship
-    properties = relationship('Property', backref='user')
-    reviewer = relationship('Review', backref='userx')
+    properties = relationship('Property', backref='property_owner')
+    reviews = relationship('Review', backref='user_reviews', overlaps="reviewer,userx")
     favorite_properties = relationship('UserFavoriteProperty', backref='user')
 
     serialize_rules = ('-properties.user', '-favorite_properties.user', '-reviews.user',)
+
 
     
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}', email='{self.email}', role='{self.role}')>"
 
-class Property(db.Model,SerializerMixin):
+class Property(db.Model, SerializerMixin):
     __tablename__ = 'properties'
     id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.Integer, ForeignKey('location.id'))
+    country = db.Column(db.String)  
+    city_town = db.Column(db.String)  
+    neighborhood_area = db.Column(db.String)
+    address = db.Column(db.String)
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
     property_type = db.Column(db.String)
     property_category = db.Column(db.String)
+    property_rent = db.Column(db.Float, default=0.0)
     bedrooms = db.Column(db.Integer)
     bathrooms = db.Column(db.Integer)
     square_footage = db.Column(db.Integer)
-    media = db.Column(db.String)
     furnished = db.Column(db.String, default='Y')
     description = db.Column(db.String)
     location_details = db.Column(db.String)
-    landlord_name = db.Column(db.String)
+    property_owner_name = db.Column(db.String)
+    property_owner_photo = db.Column(db.String)
     contact_phone = db.Column(db.String)
     contact_email = db.Column(db.String)
+    contact_whatsapp = db.Column(db.String)
     preferred_contact_method = db.Column(db.String)
     additional_details = db.Column(db.String)
 
+    # Media fields
+    main_image = db.Column(db.String)
+    images = db.Column(db.String)
+    house_tour_video = db.Column(db.String)
+    property_documents = db.Column(db.String)
+
+    # Social media accounts
+    facebook = db.Column(db.String)
+    twitter = db.Column(db.String)
+    instagram = db.Column(db.String)
+    linkedin = db.Column(db.String)
+    other_social_media = db.Column(db.String)
+
+    # Amenities field
+    amenities = db.Column(db.String)
+
+
     #relationship
     rental_terms = relationship('RentalTerms', backref='property')
+    # userz = db.relationship('User', backref='properties')
+    
     
     serialize_rules = ('-user.properties',)
 
@@ -82,7 +108,7 @@ class Review(db.Model):
     review_date = db.db.Column(db.DateTime, server_default =db.func.now())
     
     #relationship
-    user = relationship('User', backref='reviews')
+    user = db.relationship('User', back_populates='reviews', overlaps="reviewer,userx")
     listing = relationship('Listing', backref='review')
     properties = relationship('Property', backref='review')
     
@@ -100,7 +126,7 @@ class UserFavoriteProperty(db.Model):
     property_id = db.Column(db.Integer, ForeignKey('properties.id'))
     
     # Relationships
-    
+    usery = db.relationship('User', backref='favorite_propertiesx')
     listing = relationship('Listing', backref='favorite_properties')
     property = relationship('Property', backref='favorite_properties')
 

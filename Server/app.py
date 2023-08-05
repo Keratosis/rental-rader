@@ -132,27 +132,43 @@ class PropertyResource(Resource):
     def get(self):
         properties = Property.query.all()
         property_list = [
-            # {
-            #     'id': property.id,
-            #     'property_type': property.property_type,
-            #     'property_category': property.property_category,
-            #     'bedrooms': property.bedrooms,
-            #     'bathrooms': property.bathrooms,
-            #     'square_footage': property.square_footage,
-            #     'media': property.media,
-            #     'furnished': property.furnished,
-            #     'description': property.description,
-            #     'location_details': property.location_details,
-            #     'landlord_name': property.landlord_name,
-            #     'contact_phone': property.contact_phone,
-            #     'contact_email': property.contact_email,
-            #     'preferred_contact_method': property.preferred_contact_method,
-            #     'additional_details': property.additional_details,
-            # }
-            property.to_dict() for property in properties
-        ]
+            {
+                'id': property.id,
+                'property_type': property.property_type,
+                'property_category': property.property_category,
+                'property_rent': property.property_rent,
+                'bedrooms': property.bedrooms,
+                'bathrooms': property.bathrooms,
+                'amenities': property.amenities,
+                'square_footage': property.square_footage,
+                'main_image': property.main_image,
+                'images': property.images,
+                'house_tour_video': property.house_tour_video,
+                'property_documents': property.property_documents,
+                'furnished': property.furnished,
+                'description': property.description,
+                'location_details': property.location_details,
+                'country': property.country,
+                'city_town': property.city_town,
+                'neighborhood_area': property.neighborhood_area, 
+                'address': property.address,
+                'property_owner_name': property.property_owner_name,
+                'property_owner_photo': property.property_owner_photo,
+                'contact_phone': property.contact_phone,
+                'contact_whatsapp': property.contact_whatsapp,
+                'contact_email': property.contact_email, 
+                'facebook': property.facebook,
+                'twitter': property.twitter,
+                'instagram': property.instagram,
+                'linkedin': property.linkedin,
+                'other_social_media': property.other_social_media,
+                'preferred_contact_method': property.preferred_contact_method,
+                'additional_details': property.additional_details,
+                    }
+                    for property in properties
+                ]
         response= make_response( property_list,200)
-        
+                
         return response
     
     def post(self):
@@ -162,35 +178,67 @@ class PropertyResource(Resource):
         # Extract the required fields from the JSON data
         property_type = data.get('property_type')
         property_category = data.get('property_category')
+        property_rent = data.get('property.rent')
         bedrooms = data.get('bedrooms')
         bathrooms = data.get('bathrooms')
+        amenities = data.get('amenities')
         square_footage = data.get('square_footage')
-        media = data.get('media')
+        main_image = data.get('main_image')
+        images = data.get('images')
+        house_tour_video = data.get('house_tour_video')
+        property_documents = data.get('property_documents')
         furnished = data.get('furnished', 'Y')
         description = data.get('description')
         location_details = data.get('location_details')
-        landlord_name = data.get('landlord_name')
-        contact_phone = data.get('contact_phone')
-        contact_email = data.get('contact_email')
-        preferred_contact_method = data.get('preferred_contact_method')
-        additional_details = data.get('additional_details')
+        country = data.get('country')
+        city_town = data.get('city_town')
+        neighborhood_area = data.get('neighborhood_area')
+        address = data.get('address')
+        property_owner_name =  data.get('property.property_owner_name')
+        property_owner_photo = data.get('property.property_owner_photo')
+        contact_phone = data.get('property.contact_phone')
+        contact_whatsapp = data.get('property.contact_whatsapp')
+        contact_email = data.get('property.contact_email')
+        facebook = data.get('property.facebook')
+        twitter = data.get('property.twitter')
+        instagram = data.get('property.instagram')
+        linkedin = data.get('property.linkedin')
+        other_social_media = data.get('property.other_social_media')
+        preferred_contact_method = data.get('property.preferred_contact_method')
+        additional_details = data.get('property.additional_details')
 
         # Create a new Property object and add it to the database
         new_property = Property(
             property_type=property_type,
             property_category=property_category,
+            property_rent=property_rent,
             bedrooms=bedrooms,
             bathrooms=bathrooms,
+            amenities=amenities,
             square_footage=square_footage,
-            media=media,
-            furnished=furnished,
+            main_image=main_image,
+            images=images,
+            house_tour_video=house_tour_video,
+            property_documents=property_documents,
+            furnished='furnished' 'Y',
             description=description,
             location_details=location_details,
-            landlord_name=landlord_name,
+            country=country,
+            city_town=city_town,
+            neighborhood_area=neighborhood_area,
+            address=address,
+            property_owner_name=property_owner_name,
+            property_owner_photo=property_owner_photo,
             contact_phone=contact_phone,
+            contact_whatsapp=contact_whatsapp,
             contact_email=contact_email,
-            preferred_contact_method=preferred_contact_method,
-            additional_details=additional_details,
+            facebook=facebook,
+            twitter=twitter,
+            instagram=instagram,
+            linkedin=linkedin,
+            other_social_media=other_social_media,
+            preferred_contact_method =preferred_contact_method,
+            additional_details =additional_details,
         )
         db.session.add(new_property)
         db.session.commit()
@@ -203,16 +251,32 @@ class PropertyResource(Resource):
             'id': new_property.id,
             'property_type': new_property.property_type,
             'property_category': new_property.property_category,
+            'property_rent': new_property.property_rent,
             'bedrooms': new_property.bedrooms,
             'bathrooms': new_property.bathrooms,
+            'amenities': new_property.amenities,
             'square_footage': new_property.square_footage,
-            'media': new_property.media,
+            'main_image': new_property.main_image,
+            'images': new_property.images,
+            'house_tour_video': new_property.house_tour_video,
+            'property_documents': new_property.property_documents,
             'furnished': new_property.furnished,
             'description': new_property.description,
             'location_details': new_property.location_details,
-            'landlord_name': new_property.landlord_name,
+            'country': new_property.country,
+            'city_town' : new_property.city_town,
+            'neighborhood_area' : new_property.neighborhood_area,
+            'address' : new_property.address,
+            'property_owner_name': new_property.property_owner_name,
+            'property_owner_photo': new_property.property_owner_photo,
             'contact_phone': new_property.contact_phone,
+            'contact_whatsapp': new_property.contact_whatsapp,
             'contact_email': new_property.contact_email,
+            'facebook': new_property.facebook,
+            'twitter': new_property.twitter,
+            'instagram': new_property.instagram,
+            'linkedin': new_property.linkedin,
+            'other_social_media': new_property.other_social_media,
             'preferred_contact_method': new_property.preferred_contact_method,
             'additional_details': new_property.additional_details,
         }, 201  # 201 Created status code
@@ -229,18 +293,36 @@ class PropertyResourceId(Resource):
                 {
                     'id': property.id,
                     'property_type': property.property_type,
+                    'property_category': property.property_category,
+                    'property_rent': property.property_rent,
                     'bedrooms': property.bedrooms,
                     'bathrooms': property.bathrooms,
+                    'amenities': property.amenities,
                     'square_footage': property.square_footage,
-                    'media': property.media,
+                    'main_image': property.main_image,
+                    'images': property.images,
+                    'house_tour_video': property.house_tour_video,
+                    'property_documents': property.property_documents,
                     'furnished': property.furnished,
                     'description': property.description,
                     'location_details': property.location_details,
-                    'landlord_name': property.landlord_name,
+                    'country': property.country,
+                    'city_town' : property.city_town,
+                    'neighborhood_area' : property.neighborhood_area,
+                    'address' : property.address,
+                    'property_owner_name': property.property_owner_name,
+                    'property_owner_photo': property.property_owner_photo,
                     'contact_phone': property.contact_phone,
+                    'contact_whatsapp': property.contact_whatsapp,
                     'contact_email': property.contact_email,
+                    'facebook': property.facebook,
+                    'twitter': property.twitter,
+                    'instagram': property.instagram,
+                    'linkedin': property.linkedin,
+                    'other_social_media': property.other_social_media,
                     'preferred_contact_method': property.preferred_contact_method,
                     'additional_details': property.additional_details,
+
                 }
                 for property in properties
             ]
@@ -252,16 +334,33 @@ class PropertyResourceId(Resource):
                 return {
                     'id': property.id,
                     'property_type': property.property_type,
+                    'property_category': property.property_category,
+                    'property_rent': property.property_rent,
                     'bedrooms': property.bedrooms,
                     'bathrooms': property.bathrooms,
+                    'amenities': property.amenities,
                     'square_footage': property.square_footage,
-                    'media': property.media,
+                    'main_image': property.main_image,
+                    'images': property.images,
+                    'house_tour_video': property.house_tour_video,
+                    'property_documents': property.property_documents,
                     'furnished': property.furnished,
                     'description': property.description,
                     'location_details': property.location_details,
-                    'landlord_name': property.landlord_name,
+                    'country': property.country,
+                    'city_town' : property.city_town,
+                    'neighborhood_area' : property.neighborhood_area,
+                    'address' : property.address,
+                    'property_owner_name': property.property_owner_name,
+                    'property_owner_photo': property.property_owner_photo,
                     'contact_phone': property.contact_phone,
+                    'contact_whatsapp': property.contact_whatsapp,
                     'contact_email': property.contact_email,
+                    'facebook': property.facebook,
+                    'twitter': property.twitter,
+                    'instagram': property.instagram,
+                    'linkedin': property.linkedin,
+                    'other_social_media': property.other_social_media,
                     'preferred_contact_method': property.preferred_contact_method,
                     'additional_details': property.additional_details,
                 }
@@ -294,16 +393,32 @@ class PropertyResourceId(Resource):
                 'id': property.id,
                 'property_type': property.property_type,
                 'property_category': property.property_category,
+                'property_rent': property.property_rent,
                 'bedrooms': property.bedrooms,
                 'bathrooms': property.bathrooms,
+                'amenities': property.amenities,
                 'square_footage': property.square_footage,
-                'media': property.media,
+                'main_image': property.main_image,
+                'images': property.images,
+                'house_tour_video': property.house_tour_video,
+                'property_documents': property.property_documents,
                 'furnished': property.furnished,
                 'description': property.description,
                 'location_details': property.location_details,
-                'landlord_name': property.landlord_name,
+                'country': property.country,
+                'city_town' : property.city_town,
+                'neighborhood_area' : property.neighborhood_area,
+                'address' : property.address,
+                'property_owner_name': property.property_owner_name,
+                'property_owner_photo': property.property_owner_photo,
                 'contact_phone': property.contact_phone,
+                'contact_whatsapp': property.contact_whatsapp,
                 'contact_email': property.contact_email,
+                'facebook': property.facebook,
+                'twitter': property.twitter,
+                'instagram': property.instagram,
+                'linkedin': property.linkedin,
+                'other_social_media': property.other_social_media,
                 'preferred_contact_method': property.preferred_contact_method,
                 'additional_details': property.additional_details,
             }, 200
