@@ -5,7 +5,7 @@ function Sect() {
     return (
         <div className="section">
           <div className="image-container">
-            <img src="https://images.unsplash.com/photo-1575517111478-7f6afd0973db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGhvdXNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=400&q=60" alt="Image" />
+            <img src="https://images.unsplash.com/photo-1575517111478-7f6afd0973db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGhvdXNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=400&q=60" alt="pic" />
           </div>
           <div className="text-container">
             <h1>Find your Perfect rental property</h1>

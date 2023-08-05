@@ -1,6 +1,6 @@
-/* Listing.css */
+/* Properties.css */
 
-.custom-listings-container {
+.custom-properties-container {
     margin: 20px;
   }
   
@@ -54,5 +54,25 @@
     font-size: 14px;
     color: #333;
     margin-bottom: 5px;
+  }
+  
+  .card-buttons {
+    display: flex;
+    align-items: center; 
+  }
+  
+  .card-buttons button {
+    margin-right: 400px; 
+  }
+  
+  .heart-icon {
+    width: 24px;
+    height: 24px;
+    fill: grey; /* Default color */
+    transition: fill 0.2s;
+  }
+  
+  .heart-icon.liked {
+    fill: red; /* Liked color */
   }
   

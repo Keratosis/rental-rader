@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import '../CSS/Sect1.css'
+import React, { useEffect, useState, useRef } from 'react';
+import '../CSS/Sect1.css';
 
 function Sect1() {
   const [sect1, setListings] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const translateRef = useRef(0);
 
   useEffect(() => {
     // Function to fetch the listings using the token
@@ -26,7 +28,8 @@ function Sect1() {
         }
 
         const data = await response.json();
-        setListings(data); // Updating the 'listings' state with the fetched data
+        // Duplicate the listings to create an endless loop
+        setListings([...data, ...data]);
         console.log(data); // Logging the fetched data to the console
       } catch (error) {
         console.error('Error fetching listings:', error);
@@ -35,17 +38,43 @@ function Sect1() {
 
     fetchListings();
   }, []);
-  
+
+  useEffect(() => {
+    // Start the automatic sliding after 30 seconds
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % (sect1.length / 2));
+    }, 10000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [sect1]);
+
+  useEffect(() => {
+    // Update the translateX value when currentIndex changes
+    translateRef.current = currentIndex * -240; // Increased card width
+
+    // When the currentIndex reaches the last real slide, we smoothly move the slide back to the start
+    if (currentIndex === sect1.length / 2 - 1) {
+      setTimeout(() => {
+        setCurrentIndex(0);
+        translateRef.current = 0;
+      }, 1000);
+    }
+  }, [currentIndex, sect1]);
+
   return (
     <div className="horizontal-container">
-      
-      <div className="section2">
-      
-        {sect1.map((item) => (
-          
-          <div key={item.id} className="small-container">
+      <div
+        className="section2"
+        style={{
+          transform: `translateX(${translateRef.current}px)`,
+          transition: 'transform 1s',
+        }}
+      >
+        {sect1.map((item, index) => (
+          <div key={index} className="small-container">
             <div className="rectangle">
-              <img src={item.media} alt="Image" />
+              <img src={item.media} alt="pic" />
             </div>
             <p>{item.title}</p>
           </div>
@@ -56,5 +85,3 @@ function Sect1() {
 }
 
 export default Sect1;
-
-

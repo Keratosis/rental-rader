@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { Navigate } from 'react-router-dom';
 import '../CSS/login.css';
 
 const validationSchema = Yup.object().shape({
@@ -8,8 +9,11 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-function Login() {
-  const handleSubmit = async (values, { setSubmitting, setStatus }) => {
+function Login({ onLogin }) {
+  const [error, setError] = useState('');
+  const [isSuccessful, setIsSuccessful] = useState(false);
+
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await fetch('/login', {
         method: 'POST',
@@ -24,7 +28,7 @@ function Login() {
 
       if (!response.ok) {
         const data = await response.json();
-        setStatus(data.message); // Set the server error message in the 'status' variable
+        setError(data.message);
         setSubmitting(false);
         return;
       }
@@ -32,11 +36,11 @@ function Login() {
       const data = await response.json();
       // Assuming the server returns an access token after successful login
       localStorage.setItem('access_token', data.access_token);
-      // Navigate to the home page after successful login
-      window.location.href = '/'; // Change this to the appropriate home page path
+      onLogin(data.access_token); // Pass the access token to the parent component (App)
+      setIsSuccessful(true); // Set the flag to true to trigger the <Navigate> component
     } catch (error) {
       console.error('Error during login:', error);
-      setStatus('An error occurred during login.'); // Generic error message for other errors
+      setError('An error occurred during login.');
       setSubmitting(false);
     }
   };
@@ -52,11 +56,12 @@ function Login() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, status }) => (
+        {({ isSubmitting }) => (
           <Form>
             {/* Display server-side error if present */}
-            {status && <div className="error">{status}</div>}
-
+            {error && <div className="error">{error}</div>}
+            {/* Use Navigate to redirect after successful login */}
+            {isSuccessful && <Navigate to="/" replace />}
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <Field type="email" id="email" name="email" required />

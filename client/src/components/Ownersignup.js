@@ -104,8 +104,8 @@ function Tenantsignup() {
         body: JSON.stringify({
           username: values.username,
           email: values.email,
-          hashed_password: values.hashed_password,
-          role: 'tenant',
+          password: values.hashed_password,
+          role: 'owner',
         }),
       });
 

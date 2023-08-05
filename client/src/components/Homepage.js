@@ -1,5 +1,4 @@
 import React from 'react'
-import Boxes from './Boxes'
 import Sect from './Sect'
 import Sect1 from './Sect1'
 import Sect2 from './Sect2'
@@ -10,7 +9,7 @@ import Sect3 from './Sect3'
 function Homepage() {
   return (
     <div>
-    {/* <Boxes/>  */}
+   
     <Sect/>
 
     <br/>

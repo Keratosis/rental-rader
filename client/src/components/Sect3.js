@@ -1,7 +1,7 @@
 import React, { useEffect ,useState} from 'react'
 
 function Sect3() {
-  const [listings, setListings] = useState([]);
+  const [sect3, setListings] = useState([]);
 
   useEffect(() => {
     // Function to fetch the listings using the token
@@ -38,10 +38,10 @@ function Sect3() {
     return (
       <div className="horizontal-container">
         <div className="section2">
-          {listings.map((item) => (
+          {sect3.map((item) => (
             <div key={item.id} className="small-container">
               <div className="rectangle">
-                <img src={item.media} alt="Image" />
+                <img src={item.media} alt="pic" />
               </div>
               <p>{item.title}</p>
             </div>
