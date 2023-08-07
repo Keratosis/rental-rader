@@ -215,6 +215,7 @@ class PropertyResource(Resource):
         property_list = [
             {
                 'id': property.id,
+                'property_title':property.property_title,
                 'property_type': property.property_type,
                 'property_category': property.property_category,
                 'property_rent': property.property_rent,
@@ -255,6 +256,7 @@ class PropertyResource(Resource):
     def post(self):
         data = request.get_json()
         # Extract the required fields from the JSON data
+        property_title = data.get('property_title')
         property_type = data.get('property_type')
         property_category = data.get('property_category')
         property_rent = data.get('property.rent')
@@ -288,6 +290,7 @@ class PropertyResource(Resource):
 
         # Create a new Property object and add it to the database
         new_property = Property(
+            property_title=property_title,
             property_type=property_type,
             property_category=property_category,
             property_rent=property_rent,
@@ -328,6 +331,7 @@ class PropertyResource(Resource):
         return {
             'message': success_message,
              'id': new_property.id,
+            'property_title': new_property.property_title,
             'property_type': new_property.property_type,
             'property_category': new_property.property_category,
             'property_rent': new_property.property_rent,
@@ -370,7 +374,8 @@ class PropertyResourceId(Resource):
             properties = Property.query.all()
             property_list = [
                 {
-                     'id': property.id,
+                    'id': property.id,
+                    'property_title': property.property_title,
                     'property_type': property.property_type,
                     'property_category': property.property_category,
                     'property_rent': property.property_rent,
@@ -411,6 +416,7 @@ class PropertyResourceId(Resource):
             if property:
                 return {
                     'id': property.id,
+                    'property_title': property.property_title,
                     'property_type': property.property_type,
                     'property_category': property.property_category,
                     'property_rent': property.property_rent,
@@ -465,6 +471,7 @@ class PropertyResourceId(Resource):
 
             return {
                 'id': property.id,
+                'property_title': property.property_title,
                 'property_type': property.property_type,
                 'property_category': property.property_category,
                 'property_rent': property.property_rent,
@@ -693,8 +700,11 @@ class ReviewResource(Resource):
             {
                 'id': review.id,
                 'user_id': review.user_id,
-                'listing_id': review.listing_id,
+                # 'listing_id': review.listing_id,
                 'property_id': review.property_id,
+                'full_name': review.full_name,
+                'address': review.address,
+                'email': review.email,
                 'comment': review.comment,
                 'review_date': review.review_date.strftime('%Y-%m-%d %H:%M:%S')
             }
@@ -702,32 +712,32 @@ class ReviewResource(Resource):
         ]
         return review_list
 
-   
+
     def post(self):
         data = request.get_json()
         if data:
             # Extract data from the JSON payload
             user_id = data.get('user_id')
-            listing_id = data.get('listing_id')
             property_id = data.get('property_id')
+            full_name = data.get('full_name')
+            address = data.get('address')
+            email = data.get('email')
             comment = data.get('comment')
-            review_date_str = data.get('review_date')
+
+            # Automatically set the review date to the current date and time
+            review_date = datetime.now()
 
             # Check if the required fields are present in the request
-            if not all([user_id, listing_id, property_id, comment, review_date_str]):
+            if not all([user_id, property_id, comment]):
                 return {'message': 'All fields are required'}, 400
-
-            try:
-                # Parse the review_date_str into a Python datetime object
-                review_date = datetime.strptime(review_date_str, '%Y-%m-%d ')
-            except ValueError:
-                return {'message': 'Invalid review_date format. Expected format: YYYY-MM-DD HH:MM:SS'}, 400
 
             # Create a new Review object and add it to the database
             new_review = Review(
                 user_id=user_id,
-                listing_id=listing_id,
                 property_id=property_id,
+                full_name=full_name,
+                address=address,
+                email=email,
                 comment=comment,
                 review_date=review_date
             )
@@ -741,15 +751,17 @@ class ReviewResource(Resource):
                 'message': success_message,
                 'id': new_review.id,
                 'user_id': new_review.user_id,
-                'listing_id': new_review.listing_id,
                 'property_id': new_review.property_id,
+                'full_name': new_review.full_name,
+                'address': new_review.address,
+                'email': new_review.email,
                 'comment': new_review.comment,
                 'review_date': new_review.review_date.strftime('%Y-%m-%d %H:%M:%S')
             }, 201  # 201 Created status code
         else:
             return {'message': 'Invalid JSON data'}, 400
 
-        
+      
 class ReviewResourceId(Resource):
     def get(self, id):
         review = Review.query.get(id)
@@ -757,8 +769,11 @@ class ReviewResourceId(Resource):
             return {
                 'id': review.id,
                 'user_id': review.user_id,
-                'listing_id': review.listing_id,
+                # 'listing_id': review.listing_id,
                 'property_id': review.property_id,
+                'full_name': review.full_name,
+                'address': review.address,
+                'email': review.email,
                 'comment': review.comment,
                 'review_date': review.review_date.strftime('%Y-%m-%d %H:%M:%S')
             }, 200
@@ -773,10 +788,16 @@ class ReviewResourceId(Resource):
                 # Update the review attributes based on the provided data
                 if 'user_id' in data:
                     review.user_id = data['user_id']
-                if 'listing_id' in data:
-                    review.listing_id = data['listing_id']
+                # if 'listing_id' in data:
+                #     review.listing_id = data['listing_id']
                 if 'property_id' in data:
                     review.property_id = data['property_id']
+                if 'full_name' in data:
+                    review.full_name = data['full_name']
+                if 'address' in data:
+                    review.address = data['address']
+                if 'email' in data:
+                    review.email = data['email']
                 if 'comment' in data:
                     review.comment = data['comment']
                 if 'review_date' in data:
@@ -795,8 +816,11 @@ class ReviewResourceId(Resource):
                     'message': success_message,
                     'id': review.id,
                     'user_id': review.user_id,
-                    'listing_id': review.listing_id,
+                    # 'listing_id': review.listing_id,
                     'property_id': review.property_id,
+                    'full_name': review.full_name,
+                    'address': review.address,
+                    'email': review.email,
                     'comment': review.comment,
                     'review_date': review.review_date.strftime('%Y-%m-%d')
                 }, 200

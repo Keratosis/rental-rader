@@ -66,8 +66,7 @@ function Properties() {
               </div>
               <div className="custom-card-body">
                 <h5 className="custom-card-title">{property.title}</h5>
-                <p className="custom-card-text">{property.description}</p>
-                <p className="custom-card-text">Rent: {property.property_rent}</p>
+                <p className="custom-card-text">Rent: Kshs {property.property_rent}</p>
                 <p className="custom-card-text">Location: {property.address}</p>
                 <p className="custom-card-text">Utilities: {property.amenities}</p>
                 <div className="card-buttons">

@@ -1,5 +1,5 @@
 {
-  "proxy": "http://127.0.0.1:5810",
+  "proxy": "http://127.0.0.1:5900",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -22,7 +22,7 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start": "PORT=4810 react-scripts start",
+    "start": "PORT=4900 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

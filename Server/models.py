@@ -3,12 +3,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy_serializer import SerializerMixin
 
-
-
-
-
-
-
 db = SQLAlchemy()
  
 class User(db.Model, SerializerMixin):
@@ -22,7 +16,7 @@ class User(db.Model, SerializerMixin):
 
     # Relationship
     properties = relationship('Property', backref='user')
-    reviewer = relationship('Review', backref='userx')
+    reviews = relationship('Review', back_populates='reviewer', lazy='dynamic')
     favorite_properties = relationship('UserFavoriteProperty', backref='user')
 
     serialize_rules = ('-properties.user', '-favorite_properties.user', '-reviews.user',)
@@ -57,6 +51,7 @@ class Property(db.Model, SerializerMixin):
     neighborhood_area = db.Column(db.String)
     address = db.Column(db.String)
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    property_title = db.Column(db.String)
     property_type = db.Column(db.String)
     property_category = db.Column(db.String)
     property_rent = db.Column(db.Float, default=0.0)
@@ -133,7 +128,7 @@ class Listing(db.Model):
     media = db.Column(db.String)
     
     # Relationships
-    reviewws = relationship('Review', backref='listingz')
+    # reviewws = relationship('Review', backref='listingz')
 
     
     def __repr__(self):
@@ -143,14 +138,17 @@ class Review(db.Model):
     __tablename__ = 'review'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
-    listing_id = db.Column(db.Integer, ForeignKey('listing.id'))
+    # listing_id = db.Column(db.Integer, ForeignKey('listing.id'))
     property_id = db.Column(db.Integer, ForeignKey('properties.id'))
+    full_name = db.Column(db.String)
+    address = db.Column(db.String)
+    email = db.Column(db.String)
     comment = db.Column(db.String)
     review_date = db.db.Column(db.DateTime, server_default =db.func.now())
     
     #relationship
-    user = relationship('User', backref='reviews')
-    listing = relationship('Listing', backref='review')
+    reviewer = relationship('User', back_populates='reviews', lazy='joined')
+    # listing = relationship('Listing', backref='review')
     properties = relationship('Property', backref='review')
     
     
@@ -207,4 +205,3 @@ class RentalTerms(db.Model):
 
     def __repr__(self):
         return f"<RentalTerms(id={self.id}, rental_price={self.rental_price}, security_deposit={self.security_deposit})>"
-
