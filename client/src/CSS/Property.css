@@ -68,11 +68,12 @@
   .heart-icon {
     width: 24px;
     height: 24px;
-    fill: grey; /* Default color */
+    fill: rgb(14, 13, 13); /* Default color */
     transition: fill 0.2s;
   }
   
   .heart-icon.liked {
-    fill: red; /* Liked color */
+    fill: rgb(74, 34, 184); /* Liked color */
   }
+  
   

@@ -62,18 +62,22 @@
 }
 
 .card-buttons button {
+  background-color: rgb(224, 22, 56);
   margin-right: 400px; 
+}
+.card-buttons button:active{
+  background-color: darkmagenta;
 }
 
 .heart-icon {
   width: 24px;
   height: 24px;
-  fill: grey; /* Default color */
+  fill: rgb(182, 176, 176); /* Default color */
   transition: fill 0.2s;
 }
 
 .heart-icon.liked {
-  fill: red; /* Liked color */
+  fill: rgb(6, 6, 7); /* Liked color */
 }
 
 /* Listings.css */
@@ -143,21 +147,26 @@
     margin-right: 400px; 
   }
 
-
   /* Custom styles for the View Details button */
 .custom-card .card-buttons button {
   display: inline-block;
   padding: 10px 20px; 
-  font-size: 16 px; 
+  font-size: 16px; /* Fix: Removed space between value and unit */
 }
 
-  .heart-icon {
-    width: 24px;
-    height: 24px;
-    fill: grey; /* Default color */
-    transition: fill 0.2s;
-  }
+.heart-icon {
+  width: 24px;
+  height: 24px;
+  fill: rgb(14, 13, 13); /* Default color */
+  transition: fill 0.2s;
+}
+
+.heart-icon.liked {
+  fill: rgb(74, 34, 184); /* Liked color */
+}
+
+
+
+
+
   
-  .heart-icon.liked {
-    fill: red; /* Liked color */
-  }

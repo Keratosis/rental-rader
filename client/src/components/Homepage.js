@@ -15,7 +15,7 @@ function Homepage() {
     <br/>
     <div>
       <h2>Discover the Best Properties in the cities</h2>
-      <p>find the perfect rental home and comercial space. to suit your need explore all available listings now </p>
+      <p>Find the perfect rental home and comercial space. to suit your need explore all available listings now </p>
     </div> 
     <br/>
     
