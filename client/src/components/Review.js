@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-function ReviewForm({ user_id, property_id }) {
+function ReviewForm() {
+  // Generate random user_id and property_id
+  const randomUserId = Math.floor(Math.random() * 1000);
+  const randomPropertyId = Math.floor(Math.random() * 1000);
+
   const [formData, setFormData] = useState({
     full_name: '',
     address: '',
@@ -19,12 +23,14 @@ function ReviewForm({ user_id, property_id }) {
     e.preventDefault();
 
     const data = {
-      user_id: user_id,
-      property_id: property_id,
+      user_id: randomUserId,       // Use the generated random user_id
+      property_id: randomPropertyId, // Use the generated random property_id
       full_name: full_name,
       address: address,
       email: email,
       comment: comment,
+      // Include the current date and time in ISO format
+      review_date: new Date().toISOString()
     };
     
     try {
@@ -38,6 +44,14 @@ function ReviewForm({ user_id, property_id }) {
 
       const responseData = await response.json();
       alert(responseData.message);
+
+      // Clear the form fields after successful submission
+      setFormData({
+        full_name: '',
+        address: '',
+        email: '',
+        comment: '',
+      });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -45,6 +59,7 @@ function ReviewForm({ user_id, property_id }) {
 
   return (
     <div className="review-form">
+      {/* <h2>Leave a Review</h2> */}
       <form onSubmit={handleSubmit}>
         <label htmlFor="full_name">Full Name:</label>
         <input
@@ -98,3 +113,4 @@ function ReviewForm({ user_id, property_id }) {
 }
 
 export default ReviewForm;
+

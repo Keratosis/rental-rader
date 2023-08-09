@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 # from flask_bcrypt import Bcrypt
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required,  get_jwt_identity, current_user
-from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty 
+from models import db,User, Listing, Location, Property, RentalTerms, Review, UserFavoriteProperty, NewestListing, FeaturedListing, PropertyInquiry
 import bcrypt
 
 
@@ -518,12 +518,6 @@ class PropertyResourceId(Resource):
             return {'message': 'Property deleted successfully'}, 200
         else:
             return {'message': 'Property not found'}, 404
-        
-
-
-        
-
-
 
 
 
@@ -678,7 +672,205 @@ class ListingResourceId(Resource):
             return {'message': 'Listing deleted successfully'}, 200
         else:
             return {'message': 'Listing not found'}, 404
+        
+class NewestListingResource(Resource):
+    def get(self):
+        newest_listings = NewestListing.query.all()
+        newest_listing_list = [
+            {
+                'id': listing.id,
+                'title': listing.title,
+                'description': listing.description,
+                'rent': listing.rent,
+                'place': listing.place,
+                'size': listing.size,
+                'utilities': listing.utilities,
+                'media': listing.media,
+            }
+            for listing in newest_listings
+        ]
+        response = make_response(newest_listing_list, 200)
+        return response
+    
+    def post(self):
+        data = request.get_json()
+        if data:
+            # Extract data from the JSON payload
+            title = data.get('newest_title')
+            description = data.get('newest_description')
+            rent = data.get('newest_rent')
+            place = data.get('newest_place')
+            size = data.get('newest_size')
+            utilities = data.get('newest_utilities')
+            media = data.get('newest_media')
 
+            # Create a new NewestListing object and add it to the database
+            new_listing = NewestListing(
+                title=title,
+                description=description,
+                rent=rent,
+                place=place,
+                size=size,
+                utilities=utilities,
+                media=media
+            )
+            db.session.add(new_listing)
+            db.session.commit()
+
+            # Prepare the success message
+            success_message = f"Newest Listing with ID {new_listing.id} has been successfully created."
+
+            return {
+                'message': success_message,
+                'id': new_listing.id,
+                'title': new_listing.title,
+                'description': new_listing.description,
+                'rent': new_listing.rent,
+                'place': new_listing.place,
+                'size': new_listing.size,
+                'utilities': new_listing.utilities,
+                'media': new_listing.media
+            }, 201  # 201 Created status code
+        else:
+            return {'message': 'Invalid JSON data'}, 400
+
+class NewestListingResourceId(Resource):
+    def get(self, id=None):
+        if id is None:
+            # If id is not provided, return all newest listings
+            newest_listings = NewestListing.query.all()
+            newest_listing_list = [
+                {
+                    'id': listing.id,
+                    'title': listing.title,
+                    'description': listing.description,
+                    'rent': listing.rent,
+                    'place': listing.place,
+                    'size': listing.size,
+                    'utilities': listing.utilities,
+                    'media': listing.media,
+                }
+                for listing in newest_listings
+            ]
+            return newest_listing_list
+        else:
+            # If id is provided, return a specific newest listing by ID
+            newest_listing = NewestListing.query.get(id)
+            if newest_listing:
+                return {
+                    'id': newest_listing.id,
+                    'title': newest_listing.title,
+                    'description': newest_listing.description,
+                    'rent': newest_listing.rent,
+                    'place': newest_listing.place,
+                    'size': newest_listing.size,
+                    'utilities': newest_listing.utilities,
+                    'media': newest_listing.media,
+                }
+            else:
+                return {'message': 'Newest listing not found'}, 404
+
+
+class FeaturedListingResource(Resource):
+    def get(self):
+        featured_listings = FeaturedListing.query.all()
+        featured_listing_list = [
+            {
+                'id': listing.id,
+                'title': listing.title,
+                'description': listing.description,
+                'rent': listing.rent,
+                'place': listing.place,
+                'size': listing.size,
+                'utilities': listing.utilities,
+                'media': listing.media,
+            }
+            for listing in featured_listings
+        ]
+        response = make_response(featured_listing_list, 200)
+        return response
+    
+    def post(self):
+        data = request.get_json()
+        if data:
+            # Extract data from the JSON payload
+            title = data.get('featured_title')
+            description = data.get('featured_description')
+            rent = data.get('featured_rent')
+            place = data.get('featured_place')
+            size = data.get('featured_size')
+            utilities = data.get('featured_utilities')
+            media = data.get('featured_media')
+
+            # Create a new FeaturedListing object and add it to the database
+            new_listing = FeaturedListing(
+                title=title,
+                description=description,
+                rent=rent,
+                place=place,
+                size=size,
+                utilities=utilities,
+                media=media
+            )
+            db.session.add(new_listing)
+            db.session.commit()
+
+            # Prepare the success message
+            success_message = f"Featured Listing with ID {new_listing.id} has been successfully created."
+
+            return {
+                'message': success_message,
+                'id': new_listing.id,
+                'title': new_listing.title,
+                'description': new_listing.description,
+                'rent': new_listing.rent,
+                'place': new_listing.place,
+                'size': new_listing.size,
+                'utilities': new_listing.utilities,
+                'media': new_listing.media
+            }, 201  # 201 Created status code
+        else:
+            return {'message': 'Invalid JSON data'}, 400
+
+class FeaturedListingResourceId(Resource):
+    def get(self, id=None):
+        if id is None:
+            # If id is not provided, return all featured listings
+            featured_listings = FeaturedListing.query.all()
+            featured_listing_list = [
+                {
+                    'id': listing.id,
+                    'title': listing.title,
+                    'description': listing.description,
+                    'rent': listing.rent,
+                    'place': listing.place,
+                    'size': listing.size,
+                    'utilities': listing.utilities,
+                    'media': listing.media,
+                }
+                for listing in featured_listings
+            ]
+            return featured_listing_list
+        else:
+            # If id is provided, return a specific featured listing by ID
+            featured_listing = FeaturedListing.query.get(id)
+            if featured_listing:
+                return {
+                    'id': featured_listing.id,
+                    'title': featured_listing.title,
+                    'description': featured_listing.description,
+                    'rent': featured_listing.rent,
+                    'place': featured_listing.place,
+                    'size': featured_listing.size,
+                    'utilities': featured_listing.utilities,
+                    'media': featured_listing.media,
+                }
+            else:
+                return {'message': 'Featured listing not found'}, 404
+
+
+
+    
 class LocationResource(Resource):
     def get(self):
         locations = Location.query.all()
@@ -925,11 +1117,91 @@ class FavoriteId(Resource):
             return {'message': 'UserFavoriteProperty deleted successfully'}, 200
         else:
             return {'message': 'UserFavoriteProperty not found'}, 404
+        
+class InquiryResource(Resource):
+    def get(self):
+        inquiries = PropertyInquiry.query.all()
+        inquiry_list = [
+            {
+                'id': inquiry.id,
+                'name': inquiry.name,
+                'email': inquiry.email,
+                'phone': inquiry.phone,
+                'address': inquiry.address,
+                'message': inquiry.message,
+                'inquiry_date': inquiry.inquiry_date.strftime('%Y-%m-%d %H:%M:%S'),
+                'property_id': inquiry.property_id
+            }
+            for inquiry in inquiries
+        ]
+        return inquiry_list
 
+    def post(self):
+        data = request.get_json()
+        if data:
+            name = data.get('name')
+            email = data.get('email')
+            phone = data.get('phone')
+            address = data.get('address')
+            message = data.get('message')
+            property_id = data.get('property_id')
 
+            new_inquiry = PropertyInquiry(
+                name=name,
+                email=email,
+                phone=phone,
+                address=address,
+                message=message,
+                property_id=property_id
+            )
+            db.session.add(new_inquiry)
+            db.session.commit()
 
+            success_message = f"Inquiry with ID {new_inquiry.id} has been successfully created."
 
+            return {
+                'message': success_message,
+                'id': new_inquiry.id,
+                'name': new_inquiry.name,
+                'email': new_inquiry.email,
+                'phone': new_inquiry.phone,
+                'address': new_inquiry.address,
+                'message': new_inquiry.message,
+                'inquiry_date': new_inquiry.inquiry_date.strftime('%Y-%m-%d %H:%M:%S'),
+                'property_id': new_inquiry.property_id
+            }, 201
+        else:
+            return {'message': 'Invalid JSON data'}, 400
+        
+class InquiryResourceId(Resource):
+    def get(self, id):
+        inquiry = PropertyInquiry.query.get(id)
+        if inquiry:
+            inquiry_data = {
+                'id': inquiry.id,
+                'name': inquiry.name,
+                'email': inquiry.email,
+                'phone': inquiry.phone,
+                'address': inquiry.address,
+                'message': inquiry.message,
+                'inquiry_date': inquiry.inquiry_date.strftime('%Y-%m-%d %H:%M:%S'),
+                'property_id': inquiry.property_id
+            }
+            return inquiry_data
+        else:
+            return {'message': 'Inquiry not found'}, 404
 
+    def delete(self, id):
+        inquiry = PropertyInquiry.query.get(id)
+        if inquiry:
+            db.session.delete(inquiry)
+            db.session.commit()
+            return {'message': 'Inquiry deleted successfully'}, 200
+        else:
+            return {'message': 'Inquiry not found'}, 404
+
+api.add_resource(InquiryResource, '/inquiries')
+api.add_resource(InquiryResourceId, '/inquiries/<int:id>')
 api.add_resource(UserResource, '/users')
 api.add_resource(UserResourceId, '/users/<int:user_id>')
 api.add_resource(LocationResource, '/locations')
@@ -937,6 +1209,10 @@ api.add_resource(PropertyResource, '/properties')
 api.add_resource(PropertyResourceId, '/properties/<int:id>')
 api.add_resource(ListingResource, '/listings')
 api.add_resource(ListingResourceId, '/listings/<int:id>')
+api.add_resource(NewestListingResource, '/newestlistings')
+api.add_resource(NewestListingResourceId, '/newestlistings/<int:id>')
+api.add_resource(FeaturedListingResource, '/featuredlistings')
+api.add_resource(FeaturedListingResourceId, '/featuredlistings/<int:id>')
 api.add_resource(ReviewResource, '/reviews')
 api.add_resource(ReviewResourceId,  '/reviews/<int:id>')
 api.add_resource(Favorite, '/fav')

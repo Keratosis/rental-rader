@@ -14,19 +14,23 @@ function Homepage() {
 
     <br/>
     <div>
-      <h2>Discover the Best Properties in the cities</h2>
-      <p>find the perfect rental home and comercial space. to suit your need explore all available listings now </p>
+      <h2>Discover the Best Listings in the cities</h2>
+      <p>Find the perfect rental home and comercial space to suit your need. Explore all available listings now.</p>
     </div> 
     <br/>
     
     <Sect1/>
     <br/>
-    <p>we've recently added some new rental listings</p>
+    <div>
+      <h2>Newest Listings</h2>
+      <p>See the most up-to-date listings</p>
+    </div> 
+   
     
     <Sect2/>
     <br/>
-    <p>Featured properties </p>
-    we have a variaety of rantal properties for renting un your area
+    <h2>Featured Listings </h2>
+    <p>We have a variaety of rental listings for renting in your area.</p>
     <Sect3/>
 
 

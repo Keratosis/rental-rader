@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy_serializer import SerializerMixin
+from datetime import datetime
 
 db = SQLAlchemy()
  
@@ -133,6 +134,42 @@ class Listing(db.Model):
     
     def __repr__(self):
         return f"<Listing(id={self.id}, title='{self.title}', renta={self.rent}, location='{self.location}')>"
+    
+class NewestListing(db.Model):
+    __tablename__ = 'newest_listing'
+    id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.Integer, ForeignKey('location.id'))
+    title = db.Column(db.String)
+    description = db.Column(db.String)
+    rent = db.Column(db.String)
+    place = db.Column(db.String)
+    size = db.Column(db.String)
+    utilities = db.Column(db.String)
+    media = db.Column(db.String)
+    
+    # Relationships
+    # reviews = relationship('Review', backref='newest_listings')
+
+    def __repr__(self):
+        return f"<NewestListing(id={self.id}, title='{self.title}', rent='{self.rent}', location='{self.location}')>"
+class FeaturedListing(db.Model):
+    __tablename__ = 'featured_listing'
+    id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.Integer, ForeignKey('location.id'))
+    title = db.Column(db.String)
+    description = db.Column(db.String)
+    rent = db.Column(db.String)
+    place = db.Column(db.String)
+    size = db.Column(db.String)
+    utilities = db.Column(db.String)
+    media = db.Column(db.String)
+    
+    # Relationships
+    # reviews = relationship('Review', backref='featured_listings')
+
+    def __repr__(self):
+        return f"<FeaturedListing(id={self.id}, title='{self.title}', rent='{self.rent}', location='{self.location}')>"
+
 
 class Review(db.Model):
     __tablename__ = 'review'
@@ -201,7 +238,19 @@ class RentalTerms(db.Model):
     lease_duration_max = db.Column(db.Integer)
     additional_fees = db.Column(db.String)
 
-    
 
     def __repr__(self):
         return f"<RentalTerms(id={self.id}, rental_price={self.rental_price}, security_deposit={self.security_deposit})>"
+    
+class PropertyInquiry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    inquiry_date = db.Column(db.DateTime, default=datetime.utcnow)
+    property_id = db.Column(db.Integer, db.ForeignKey('listing.id'), nullable=False)
+
+    def __repr__(self):
+        return f"PropertyInquiry(id={self.id}, name={self.name}, email={self.email}, inquiry_date={self.inquiry_date})"

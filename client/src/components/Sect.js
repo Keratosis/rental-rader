@@ -1,27 +1,31 @@
-import React from 'react'
-import '../CSS/Sect.css'
+import React from 'react';
+import '../CSS/Sect.css';
 
 function Sect() {
-    return (
-        <div className="section">
-          <div className="image-container">
-            <img src="https://images.unsplash.com/photo-1575517111478-7f6afd0973db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGhvdXNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=400&q=60" alt="pic" />
+  const sectionStyle = {
+    backgroundImage: `url("https://cdn.pixabay.com/photo/2019/03/08/20/14/kitchen-living-room-4043091_640.jpg")`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    color: 'white', // Text color for the section
+  };
+
+  return (
+    <div className="section" style={sectionStyle}>
+      <div className="text-container">
+        <h1>Rent Easy, Rent Easy</h1>
+        <p>Search nearby apartments, homes, condos, offices, shops, storage units for rent</p>
+
+         <div className="search-bar1">
+            <div className="search-container">
+              <input type="text" placeholder="ENTER A LOCATION, PROPERTY TYPE(2-BEDROOMS, OFFICES, APARTMENTS)" />
+              <div className="search-icon-box">
+                <i className="fas fa-search"></i>
+              </div>
+            </div>
           </div>
-          <div className="text-container">
-            <h1>Find your Perfect rental property</h1>
-            <p>find your properties with  rental rader</p>
-
-         
-          <div className='search-bar1'>
-      <p>Search for properties to rent</p>
-      <div className="search-container">
-        <input type="text" placeholder="Enter property location" />
-        <button>Search</button>
+        </div>
       </div>
-    </div>
-        </div>
-        </div>
-      );
-    }
+  );
+}
 
-export default Sect
+export default Sect;

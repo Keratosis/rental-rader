@@ -1,8 +1,8 @@
-"""Create  tables
+"""Creating Tables
 
-Revision ID: 91aac0476d47
+Revision ID: df196756bc3f
 Revises: 
-Create Date: 2023-08-07 17:17:48.831617
+Create Date: 2023-08-09 08:19:09.206802
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '91aac0476d47'
+revision = 'df196756bc3f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,7 +36,33 @@ def upgrade():
     sa.Column('registration_date', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('featured_listing',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('location_id', sa.Integer(), nullable=True),
+    sa.Column('title', sa.String(), nullable=True),
+    sa.Column('description', sa.String(), nullable=True),
+    sa.Column('rent', sa.String(), nullable=True),
+    sa.Column('place', sa.String(), nullable=True),
+    sa.Column('size', sa.String(), nullable=True),
+    sa.Column('utilities', sa.String(), nullable=True),
+    sa.Column('media', sa.String(), nullable=True),
+    sa.ForeignKeyConstraint(['location_id'], ['location.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('listing',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('location_id', sa.Integer(), nullable=True),
+    sa.Column('title', sa.String(), nullable=True),
+    sa.Column('description', sa.String(), nullable=True),
+    sa.Column('rent', sa.String(), nullable=True),
+    sa.Column('place', sa.String(), nullable=True),
+    sa.Column('size', sa.String(), nullable=True),
+    sa.Column('utilities', sa.String(), nullable=True),
+    sa.Column('media', sa.String(), nullable=True),
+    sa.ForeignKeyConstraint(['location_id'], ['location.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('newest_listing',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('location_id', sa.Integer(), nullable=True),
     sa.Column('title', sa.String(), nullable=True),
@@ -143,7 +169,9 @@ def downgrade():
     op.drop_table('rental_terms')
     op.drop_table('payments')
     op.drop_table('properties')
+    op.drop_table('newest_listing')
     op.drop_table('listing')
+    op.drop_table('featured_listing')
     op.drop_table('users')
     op.drop_table('location')
     # ### end Alembic commands ###

@@ -13,7 +13,7 @@ function Sect3() {
       }
 
       try {
-        const response = await fetch('/listings', {
+        const response = await fetch('/featuredlistings', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -44,6 +44,9 @@ function Sect3() {
                 <img src={item.media} alt="pic" />
               </div>
               <p>{item.title}</p>
+              <p>Rent: {item.rent}</p>
+              <p>Size: {item.size}</p>
+              <p>Address: {item.place}</p>
             </div>
           ))}
         </div>
@@ -52,4 +55,3 @@ function Sect3() {
   }
   
   export default Sect3;
-  

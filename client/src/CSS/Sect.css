@@ -1,9 +1,13 @@
-
+/* Updated CSS with background image */
 .section {
   display: flex;
   justify-content: space-between;
   margin: 5px;
-
+  background-image: url("https://cdn.pixabay.com/photo/2019/03/08/20/14/kitchen-living-room-4043091_640.jpg");
+  background-size: cover;
+  background-position: center;
+  color: white; /* Text color for the section */
+  height: 500px; /* Increase the height of the section */
 }
 
 .image-container,
@@ -14,29 +18,71 @@
 .image-container img {
   width: 100%;
   height: auto;
-  max-width: 100%; 
+  max-width: 100%;
   display: block;
-  
 }
 
 .text-container {
-  background-color: #f2f2f2;
+  margin-top: 100px;
   padding: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
   text-align: center;
+  border-radius: 10px;
 }
 
 .text-container h1 {
-  font-size: 30px;
+  font-size: 50px;
   margin-bottom: 10px;
-  color: #333; 
-
+  color: #1a1919;
 }
 
 .text-container p {
-  font-size: 18px;
-  color: #555; 
+  font-size: 20px;
+  color: #050505;
 }
 
+/* Style for the search bar */
+.search-bar1 {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 700px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: 1px solid #252525;
+  border-radius: 5px;
+  width: 500px;
+  height: 50px; 
+  flex: 1;
+}
+
+.search-icon-box {
+  background-color: #128b5d;
+  border: 1px solid #ecf1ef;
+  border-radius: 5px;
+  width: 80px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.search-icon-box i {
+  font-size: 20px;
+  color: #333;
+}

@@ -16,7 +16,7 @@ function Sect2() {
       }
 
       try {
-        const response = await fetch('/listings', {
+        const response = await fetch('/newestlistings', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -77,6 +77,9 @@ function Sect2() {
               <img src={item.media} alt="pic" />
             </div>
             <p>{item.title}</p>
+            <p>Rent: {item.rent}</p>
+            <p>Size: {item.size}</p>
+            <p>Address: {item.place}</p>
           </div>
         ))}
       </div>

@@ -9,9 +9,9 @@
 
 .small-container {
   margin: 10px;
-  text-align: center;
-  width: 220px; /* Increased width */
-  height: 270px; /* Increased height */
+  text-align: left;
+  width: 300px; /* Increased width */
+  height: 330px; /* Increased height */
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -23,13 +23,18 @@
 }
 
 .rectangle {
-  width: 220px; /* Increased width */
-  height: 180px; /* Increased height */
+  width: 300px; /* Increased width */
+  height: 200px; /* Increased height */
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
   overflow: hidden;
+}
+.small-container p {
+  margin: 0;
+  padding: 5px 0; 
+  font-size: 13px;
 }
 
 .rectangle img {

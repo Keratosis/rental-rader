@@ -65,7 +65,7 @@ function Properties() {
                 <img src={property.main_image} className="custom-card-img-top custom-property-img" alt="Property" />
               </div>
               <div className="custom-card-body">
-                <h5 className="custom-card-title">{property.title}</h5>
+                <h5 className="custom-card-title">{property.property_title}</h5>
                 <p className="custom-card-text">Rent: Kshs {property.property_rent}</p>
                 <p className="custom-card-text">Location: {property.address}</p>
                 <p className="custom-card-text">Utilities: {property.amenities}</p>
