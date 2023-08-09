@@ -64,11 +64,38 @@ const Propertydetails = () => {
     }
   };
 
+  // Filter properties based on the selected landlord
+  // const filteredListings = listings.filter(
+  //   (listing) => listing.landlordId === landlordId
+  // );
+  
 
   return (
     <Container className="my-4">
       <h1>Create a Listing</h1>
       <Form onSubmit={handleSubmit}>
+      <Form.Group>
+          <Form.Label>Property Title</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </Form.Group>
+
+      <Form.Group>
+          <Form.Label>Content</Form.Label>
+          <Form.Control
+            as="textarea"
+            placeholder="Enter description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </Form.Group>
+
+        
+
         <Form.Group>
           <Form.Label>Property Image</Form.Label>
           {/* <Form.Control
@@ -101,15 +128,7 @@ const Propertydetails = () => {
           />
         </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Property Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            placeholder="Enter description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </Form.Group>
+        
 
         <Form.Group>
           <Form.Label>Rent per Month in $</Form.Label>
@@ -169,21 +188,17 @@ const Propertydetails = () => {
           />
         </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </Form.Group>
+        
 
         <Button variant="primary" type="submit">
           Submit
         </Button>
+
       </Form>
+      
+
     </Container>
+    
   );
 };
 
