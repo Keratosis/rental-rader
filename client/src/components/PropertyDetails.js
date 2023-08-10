@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Review from './Review';
 import PropertyInquiryForm from './PropertyInquiryForm';
+import Mpesa from './Mpesa';
+
 
 function PropertyDetails({ user_id, property_id, match }) {
   const [propertyDetails, setPropertyDetails] = useState({}); // State to store fetched property details
@@ -154,13 +156,20 @@ function PropertyDetails({ user_id, property_id, match }) {
           </div>
         </div>
 
-        {/* Right Section: Review */}
-        <div className="right-section2">
-        <h2 className="section-title">Leave a Review</h2>
-        <Review user_id={user_id} property_id={property_id} />
+          {/* Right Section: Review */}
+          <div className="right-section2">
+            <div className="section-title">Leave a Review</div>
+            <div className="review-form">
+              <Review user_id={user_id} property_id={property_id} />
+            </div>
+
+            {/* Mpesa Section */}
+            <div className="mpesa-section">
+              <Mpesa />
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
-    </div>
   );
   }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import '../CSS/Sect1.css';
+import '../CSS/Sect2.css';
 
 function Sect2() {
   const [sect2, setListings] = useState([]);
