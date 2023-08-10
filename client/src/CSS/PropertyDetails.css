@@ -91,6 +91,7 @@
 .right-section1 {
   flex: 6;
   display: flex;
+  /* height: 500px; */
 }
 
 .property-owner {
@@ -98,33 +99,61 @@
   padding: 16px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
-  width: 40%; /* Set the width to 40% to cover the left 40% of the right section */
+  width: 50%; /* Set the width to 40% to cover the left 40% of the right section */
   margin-right: 20px; /* Add margin to separate Property Owner and Inquire Form */
 }
 
+/* PropertyInquiryForm.css */
 .inquire-form {
   font-size: 16px;
-  padding: 20px;
+  padding: 16px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
-  width: 60%;
+  width: 50%;
 }
 
 .inquire-form h2 {
   font-size: 20px;
 }
 
+.inquire-form form {
+  margin-top: 10px; /* Add margin to the top of the form */
+}
+
+.inquire-form label {
+  display: block;
+  margin-bottom: 5px; /* Add margin to the bottom of the label */
+}
+
+.inquire-form input,
 .inquire-form textarea {
-  margin-bottom: 10px; /* Add margin to the bottom of the text area */
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inquire-form textarea {
+  resize: vertical;
 }
 
 .inquire-form button {
-  margin-top: 10px; /* Add margin to the top of the button */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
+.inquire-form button:hover {
+  background-color: #0056b3;
+}
+
+
 .property-owner img {
-  max-width: 100px;
-  height: auto;
+  max-width: 500px;
+  height: 150px;
   border-radius: 50%;
   margin-bottom: 10px;
   border-radius: 10px;

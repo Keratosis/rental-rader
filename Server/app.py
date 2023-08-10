@@ -1117,7 +1117,7 @@ class FavoriteId(Resource):
             return {'message': 'UserFavoriteProperty deleted successfully'}, 200
         else:
             return {'message': 'UserFavoriteProperty not found'}, 404
-        
+
 class InquiryResource(Resource):
     def get(self):
         inquiries = PropertyInquiry.query.all()
@@ -1134,7 +1134,6 @@ class InquiryResource(Resource):
             }
             for inquiry in inquiries
         ]
-        return inquiry_list
 
     def post(self):
         data = request.get_json()
@@ -1146,13 +1145,17 @@ class InquiryResource(Resource):
             message = data.get('message')
             property_id = data.get('property_id')
 
+            # Extract inquiry_date from the incoming data (you can modify the format as needed)
+            inquiry_date = datetime.datetime.now()
+
             new_inquiry = PropertyInquiry(
                 name=name,
                 email=email,
                 phone=phone,
                 address=address,
                 message=message,
-                property_id=property_id
+                property_id=property_id,
+                inquiry_date=inquiry_date
             )
             db.session.add(new_inquiry)
             db.session.commit()
@@ -1172,7 +1175,7 @@ class InquiryResource(Resource):
             }, 201
         else:
             return {'message': 'Invalid JSON data'}, 400
-        
+
 class InquiryResourceId(Resource):
     def get(self, id):
         inquiry = PropertyInquiry.query.get(id)

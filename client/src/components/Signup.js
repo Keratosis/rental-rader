@@ -19,10 +19,10 @@ function Signup() {
           <div className="card-body">
             <span className="selection-indicator"></span>
             <h5 className="card-title">
-              I'm a Renter, looking for property to rent
+              I'm Tenant, looking for property to rent
             </h5>
             <a href="/Tenantsignup" className="btn btn-success sign-up-button">
-              Join as a Renter
+              Join as a Tenant
             </a>
           </div>
         </div>

@@ -1,5 +1,5 @@
 {
-  "proxy": "http://127.0.0.1:6200",
+  "proxy": "http://127.0.0.1:6700",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -11,6 +11,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "formik": "^2.4.2",
+    "jwt-decode": "^3.1.2",
     "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,7 +23,7 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start": "PORT=5200 react-scripts start",
+    "start": "PORT=5700 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

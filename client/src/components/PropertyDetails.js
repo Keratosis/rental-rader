@@ -4,7 +4,7 @@ import '../CSS/PropertyDetails.css'; // Import your custom CSS file
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Review from './Review';
-
+import PropertyInquiryForm from './PropertyInquiryForm';
 
 function PropertyDetails({ user_id, property_id, match }) {
   const [propertyDetails, setPropertyDetails] = useState({}); // State to store fetched property details
@@ -106,32 +106,12 @@ function PropertyDetails({ user_id, property_id, match }) {
               <p>Preferred Contact Method: {propertyDetails.preferred_contact_method}</p>
             </div>
     
-            {/* Inquire About This Property Form */}
+               {/* Inquire About This Property Form */}
             <div className="inquire-form">
-              <h2>Inquire About This Property</h2>
-              <form>
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name" name="name" required />
-    
-                <label htmlFor="email">Email:</label>
-                <input type="email" id="email" name="email" required />
-    
-                <label htmlFor="phone">Phone:</label>
-                <input type="tel" id="phone" name="phone" required />
-    
-                <label htmlFor="address">Address:</label>
-                <input type="text" id="address" name="address" required />
-    
-                <label htmlFor="message">Message:</label>
-                <textarea id="message" name="message" required>
-                  Hello, I'm interested in renting this property.
-                </textarea>
-    
-                <button type="submit">SEND MESSAGE</button>
-              </form>
+              <PropertyInquiryForm property_id={property_id} />
             </div>
+           </div>
           </div>
-        </div>
     
       {/* Section 3: Overview, Description, and Property Owner */}
       <div className="sections-container">

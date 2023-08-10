@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function InquireForm({ property_id }) {
+function PropertyInquiryForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -10,6 +10,17 @@ function InquireForm({ property_id }) {
   });
 
   const { name, email, phone, address, message } = formData;
+
+  const generatePropertyId = () => {
+    // Generate a random property ID (you can replace this with your own logic)
+    return Math.floor(Math.random() * 100000);
+  };
+
+  const getCurrentDateTime = () => {
+    // Generate the current date and time in the desired format
+    const currentDate = new Date();
+    return currentDate.toISOString();
+  };
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -25,7 +36,8 @@ function InquireForm({ property_id }) {
       phone: phone,
       address: address,
       message: message,
-      property_id: property_id
+      property_id: generatePropertyId(),
+      inquiry_date: getCurrentDateTime(),
     };
 
     try {
@@ -37,25 +49,14 @@ function InquireForm({ property_id }) {
         body: JSON.stringify(data),
       });
 
-      const responseData = await response.json();
-      alert(responseData.message);
-
-      // Clear the form after submission
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        message: 'Hello, I\'m interested in renting this property.'
-      });
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   return (
-    <div className="inquire-form">
-      <h2>Inquire About This Property</h2>
+    <div>
+     <h2>Inquire About This Property</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
         <input
@@ -117,4 +118,4 @@ function InquireForm({ property_id }) {
   );
 }
 
-export default InquireForm;
+export default PropertyInquiryForm;

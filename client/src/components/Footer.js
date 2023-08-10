@@ -39,7 +39,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <p>&copy; 2023 Your Company. All rights reserved.</p>
+      <p>&copy; 2023 RentalRader. All rights reserved.</p>
     </footer>
   );
 }

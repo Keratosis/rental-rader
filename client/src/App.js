@@ -15,6 +15,10 @@ import Logout from './components/Logout';
 import PropertyDetails from "./components/PropertyDetails";
 import Properties from "./components/Properties";
 import ListingDetails from "./components/ListingDetails";
+import Favourites from './components/Favourites';
+import Profile from './components/Profile';
+import UserDashboard from './components/UserDashboard';
+
 
 function App() {
   const [accessToken, setAccessToken] = useState('');
@@ -53,7 +57,10 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/Tenantsignup" element={<Tenantsignup />} />
           <Route path="/Ownersignup" element={<Ownersignup />} />
-           <Route path="/logout" element={<Logout />} />
+          <Route path="/logout" element={<Logout />} /> 
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/favourites" element={<Favourites />} />
+          <Route path="/userdashboard" element={<UserDashboard />} />
 
           {/* Use the accessToken prop for ProtectedRoute */}
           <Route

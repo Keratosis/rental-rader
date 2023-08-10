@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Header({ isAuthenticated }) {
+function Header({ isAuthenticated, username }) {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,8 +28,10 @@ function Header({ isAuthenticated }) {
                 </Link>
               </li>
               <li className="nav-item">
-              <Link className="nav-link" to="/properties">Properties</Link>
-            </li>
+                <Link className="nav-link" to="/properties">
+                  Properties
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -37,19 +39,19 @@ function Header({ isAuthenticated }) {
             {/* Conditionally render links based on the authentication status */}
             {!isAuthenticated && (
               <>
-                <a className="btn btn-outline-primary mx-2" href="/signup">
+                <Link className="btn btn-outline-primary mx-2" to="/signup">
                   Sign Up
-                </a>
-                <a className="btn btn-outline-primary" href="/login">
+                </Link>
+                <Link className="btn btn-outline-primary" to="/login">
                   Login
-                </a>
+                </Link>
               </>
             )}
 
             {isAuthenticated && (
-              <a className="btn btn-outline-primary" href="/logout">
-                Logout
-              </a>
+              <Link className="btn btn-outline-primary" to="/userdashboard">
+                WELCOME {username}
+              </Link>
             )}
           </div>
           <button
@@ -65,7 +67,6 @@ function Header({ isAuthenticated }) {
           </button>
         </div>
       </nav>
-      
     </div>
   );
 }
