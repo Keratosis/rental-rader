@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Navigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 import '../CSS/login.css';
 
 const validationSchema = Yup.object().shape({
@@ -37,13 +36,12 @@ function Login({ onLogin }) {
       const data = await response.json();
       // Assuming the server returns an access token after successful login
       localStorage.setItem('access_token', data.access_token);
-
-      // Decode the access token to get user details
-      const decodedToken = jwt_decode(data.access_token);
-
-      // Pass the access token and decoded user details to the parent component (App)
-      onLogin(data.access_token, decodedToken);
       
+      // Log the current logged-in user and role
+      console.log('Logged-in User:', data.user.username);
+      console.log('Role:', data.user.role);
+      
+      onLogin(data.access_token); // Pass the access token to the parent component (App)
       setIsSuccessful(true); // Set the flag to true to trigger the <Navigate> component
     } catch (error) {
       console.error('Error during login:', error);
