@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../CSS/ListingDetails.css'; // Import your custom CSS file
 import { useParams } from 'react-router-dom';
+import Mpesa from './Mpesa';
 
 function ListingDetails({ match }) {
   const [listingDetails, setListingDetails] = useState({}); // State to store fetched listing details
@@ -163,12 +164,8 @@ function ListingDetails({ match }) {
 
       {/* Section 7: House Video Tour */}
       <div className="house-video-tour">
-        <h2>House Video Tour</h2>
-        <video controls>
-          <source src={listingDetails.videoURL} type="video/mp4" />
-          {/* Fallback message for browsers that do not support the video tag */}
-          Your browser does not support the video tag.
-        </video>
+        <h2>Book In Advance</h2>
+        <Mpesa/>
       </div>
 
 
