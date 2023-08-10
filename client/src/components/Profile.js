@@ -1,50 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../CSS/Profile.css';
-import jwt_decode from 'jwt-decode';
 
-
-function Profile() {
+function Profile({ accessToken }) {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
+    // Fetch user details using the accessToken
     const fetchUserData = async () => {
       try {
-        // Fetch user data using the specific user's API endpoint
-        const response = await fetch('/users'); // Replace with the correct API endpoint
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data.');
+        const response = await fetch('/get-user-details', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data.user);
+
+          console.log('User Data:', data.user);
         }
-        const data = await response.json();
-  
-        // Assuming your access token contains user information, you can decode it
-        const token = localStorage.getItem('access_token');
-        const decoded = jwt_decode(token);
-  
-        // Find the logged-in user's data in the array using the decoded username
-        const loggedInUser = data.users.find(user => user.username === decoded.sub);
-  
-        // Handle the case where the logged-in user is not found
-        if (!loggedInUser) {
-          console.error('Logged-in user data not found.');
-          return;
-        }
-  
-        // Log the username and role of the logged-in user
-        console.log('Logged-in User:', loggedInUser.username);
-        console.log('Role:', loggedInUser.role);
-  
-        // Set the userData state with the fetched user data
-        setUserData(loggedInUser);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching user details:', error);
       }
     };
-  
-    fetchUserData();
-  }, []);
-  
-  
+
+    if (accessToken) {
+      fetchUserData();
+    }
+  }, [accessToken]);
 
   return (
     <div className="profile-container">

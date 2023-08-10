@@ -14,15 +14,6 @@ function Sect() {
       <div className="text-container">
         <h1>Rent Easy, Rent Easy</h1>
         <p>Search nearby apartments, homes, condos, offices, shops, storage units for rent</p>
-
-         <div className="search-bar1">
-            <div className="search-container">
-              <input type="text" placeholder="ENTER A LOCATION, PROPERTY TYPE(2-BEDROOMS, OFFICES, APARTMENTS)" />
-              <div className="search-icon-box">
-                <i className="fas fa-search"></i>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
   );
