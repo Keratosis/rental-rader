@@ -61,11 +61,12 @@
   margin-left: 0px;/* Wrap items to a new line if needed */
 }
 
+
 .small-container {
   margin: 10px;
   text-align:left;
   width: 250px; /* Increased width */
-  height: 250px; /* Increased height */
+  height: 250px;   /* Increased height */
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
