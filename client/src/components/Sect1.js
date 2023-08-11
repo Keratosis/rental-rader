@@ -63,7 +63,7 @@ function Sect1() {
   }, [currentIndex, sect1]);
 
   return (
-    <div className="horizontal-container">
+    <div className="horizontalcontainer">
       <div
         className="section2"
         style={{
@@ -72,14 +72,14 @@ function Sect1() {
         }}
       >
         {sect1.map((item, index) => (
-          <div key={index} className="small-container">
-            <div className="rectangle">
+          <div key={index} className="smal-container">
+            <div className="ectangle">
               <img src={item.media} alt="pic" />
             </div>
-            <p>{item.title}</p>
-            <p>Rent: Kshs{item.rent}</p>
-            <p>Size: {item.size}</p>
-            <p>Address: {item.place}</p>
+            <p className="item-title">{item.title}</p>
+        <p className="rent-text">Rent: Kshs{item.rent}</p>
+        <p className="size-text">Size: {item.size}</p>
+        <p className="address-text">Address: {item.place}</p>
           </div>
         ))}
       </div>

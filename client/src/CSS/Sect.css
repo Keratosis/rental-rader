@@ -1,14 +1,17 @@
-/* Updated CSS with background image */
 .section {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Vertically center the content */
   margin: 5px;
-  background-image: url("https://cdn.pixabay.com/photo/2019/03/08/20/14/kitchen-living-room-4043091_640.jpg");
+  background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80");
+  background-color: rgba(119, 105, 105, 0.5); /* Semi-transparent black background */
   background-size: cover;
   background-position: center;
-  color: white; /* Text color for the section */
+  background-blend-mode: multiply; /* Optional: Adjust the blending mode for the background image and color */
+  color: rgb(236, 223, 223); /* Text color for the section */
   height: 500px; /* Increase the height of the section */
 }
+
 
 .image-container,
 .text-container {
@@ -23,66 +26,28 @@
 }
 
 .text-container {
-  margin-top: 100px;
+  margin-top: 0px;
   padding: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
   text-align: center;
   border-radius: 10px;
+  color: #cbd8d3;
 }
 
 .text-container h1 {
-  font-size: 50px;
+  font-size: 100px;
   margin-bottom: 10px;
-  color: #1a1919;
+  color:  #015ab9;
+ font-family: fantasy;
 }
 
 .text-container p {
-  font-size: 20px;
-  color: #050505;
+  font-size: 30px;
+  color:  #015ab9;
+ font-weight: 500;
+ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+ 
 }
 
-/* Style for the search bar */
-.search-bar1 {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 700px;
-}
-
-input[type="text"] {
-  padding: 8px;
-  border: 1px solid #252525;
-  border-radius: 5px;
-  width: 500px;
-  height: 50px; 
-  flex: 1;
-}
-
-.search-icon-box {
-  background-color: #128b5d;
-  border: 1px solid #ecf1ef;
-  border-radius: 5px;
-  width: 80px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.search-icon-box i {
-  font-size: 20px;
-  color: #333;
-}

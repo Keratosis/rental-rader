@@ -56,7 +56,7 @@ function Properties() {
 
   return (
     <div className="custom-property-container">
-      <h2>Properties</h2>
+      
       <div className="custom-row">
         {properties.map(property => (
           <div key={property.id} className="custom-col-md-6 custom-col-lg-4 custom-mb-4">

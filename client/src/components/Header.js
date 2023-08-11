@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../CSS/header.css'
 
 function Header({ isAuthenticated,userRole }) {
   const handleLogout = () => {
@@ -14,7 +15,7 @@ function Header({ isAuthenticated,userRole }) {
         <div className="container-fluid">
          
           {isAuthenticated && (
-               <Link className="navbar-brand" to="/userdashboard">
+               <Link className="navbar-brand" to="/">
                RentalRader
              </Link>
                

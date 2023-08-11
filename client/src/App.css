@@ -1,6 +1,6 @@
+/* App.css */
 
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
 }
@@ -13,4 +13,13 @@ body {
 
 .main-content {
   flex: 1;
+}
+
+/* Add sticky footer styles */
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  width: 100%;
+  bottom: 0;
 }

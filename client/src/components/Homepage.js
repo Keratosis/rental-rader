@@ -4,37 +4,36 @@ import Sect1 from './Sect1'
 import Sect2 from './Sect2'
 import Sect3 from './Sect3'
 
-
+import "../CSS/Homepage.css"
 
 function Homepage() {
   return (
     <div>
+    <Sect />
+  
+    <br />
    
-    <Sect/>
-
-    <br/>
-    <div>
-      <h2>Discover the Best Listings in the cities</h2>
-      <p>Find the perfect rental home and comercial space to suit your need. Explore all available listings now.</p>
-    </div> 
-    <br/>
-    
-    <Sect1/>
-    <br/>
-    <div>
-      <h2>Newest Listings</h2>
-      <p>See the most up-to-date listings</p>
-    </div> 
+      <h2 className="section-title">Discover the Best Listings in the Cities</h2>
+      <p className="section-description">Find the perfect rental home and commercial space to suit your needs. Explore all available listings now.</p>
    
+    <br />
+  
+    <Sect1 />
+    <br />
+  
+      <h2 className="section-title">Newest Listings</h2>
+      <p className="section-description">See the most up-to-date listings</p>
     
-    <Sect2/>
-    <br/>
-    <h2>Featured Listings </h2>
-    <p>We have a variaety of rental listings for renting in your area.</p>
-    <Sect3/>
-
-
-    </div>
+  
+    <Sect2 />
+    <br />
+   
+      <h2 className="section-title">Featured Listings</h2>
+      <p className="section-description">We have a variety of rental listings for renting in your area.</p>
+  
+    <Sect3 />
+  </div>
+  
   )
 }
 

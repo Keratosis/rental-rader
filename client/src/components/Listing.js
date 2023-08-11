@@ -48,7 +48,6 @@ function Listings() {
       
   return (
     <div className="custom-listings-container">
-      <h2>Listings</h2>
       <div className="custom-row">
         {listings.map(listing => (
           <div key={listing.id} className="custom-col-md-6 custom-col-lg-4 custom-mb-4">

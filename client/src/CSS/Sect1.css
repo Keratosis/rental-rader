@@ -1,4 +1,4 @@
-.horizontal-container {
+.horizontalcontainer {
   display: flex;
   overflow: hidden; /* Hide overflow to prevent scrollbar */
 }
@@ -7,7 +7,7 @@
   display: flex;
 }
 
-.small-container {
+.smal-container {
   margin: 10px;
   text-align: left;
   width: 300px; /* Increased width */
@@ -18,11 +18,11 @@
   transition: transform 0.3s; /* Add transition for the pop-out effect */
 }
 
-.small-container:hover {
+.smal-container:hover {
   transform: scale(1.05); /* Scale up on hover */
 }
 
-.rectangle {
+.ectangle {
   width: 300px; /* Increased width */
   height: 200px; /* Increased height */
   display: flex;
@@ -37,7 +37,7 @@
   font-size: 13px;
 }
 
-.rectangle img {
+.ectangle img {
   width: 100%;
   height: 100%;
   object-fit: cover;

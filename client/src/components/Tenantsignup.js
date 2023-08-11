@@ -153,7 +153,7 @@ function Tenantsignup() {
   };
 
   return (
-    <div className="container">
+    <div className="cont">
       <h1 className="h3 mb-3 font-weight-normal">Tenant Signup</h1>
       <Formik
         initialValues={{
@@ -191,9 +191,9 @@ function Tenantsignup() {
               Sign Up
             </button>
             {/* Add a button for Google Sign-In */}
-            <button type="button" className="btn btn-danger" onClick={handleGoogleSignup}>
+            {/* <button type="button" className="btn btn-danger" onClick={handleGoogleSignup}>
               Sign Up with Google
-            </button>
+            </button> */}
 
             {/* Show any error from Google Sign-In */}
             {error && <div className="text-danger">{error}</div>}

@@ -38,23 +38,33 @@ function App() {
       <Header isAuthenticated={!!accessToken} onLogout={handleLogout} />
       <div className="main-content">
         <Routes>
-        <Route
+        {/* <Route
             path="/"
             element={<ProtectedRoute accessToken={accessToken}><Homepage /></ProtectedRoute>}
-          />
-          {/* Use ProtectedRoute to protect the Listing route */}
-          {/* <Route
-            path="/s"
-            // element={<ProtectedRoute accessToken={accessToken} ><Listing /></ProtectedRoute>}
           /> */}
-           {/* <Route path="/" element={<Homepage />} /> */}
-          <Route path="/listings" element={<Listing />} /> 
+          {/* Use ProtectedRoute to protect the Listing route */}
+         <Route
+            path="/listings"
+            element={<ProtectedRoute accessToken={accessToken} ><Listing /></ProtectedRoute>}
+          /> 
+           <Route
+            path="/properties"
+            element={<ProtectedRoute accessToken={accessToken} ><Properties /></ProtectedRoute>}
+          /> 
+           <Route
+            path="/search"
+            element={<ProtectedRoute accessToken={accessToken} ><Search/></ProtectedRoute>}
+          /> 
+
+
+           <Route path="/" element={<Homepage />} />
+          {/* <Route path="/listings" element={<Listing />} />  */}
           <Route path="/signup" element={<Signup />} />
-          <Route path="/ListingDetails/:id" element={<ListingDetails />} />
-          <Route path="/properties" element={<Properties />} />
+          {/* <Route path="/ListingDetails/:id" element={<ListingDetails />} /> */}
+          {/* <Route path="/properties" element={<Properties />} /> */}
           <Route path="/propertyDetails/:id" element={<PropertyDetails />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/search" element={<Search />} />
+          {/* <Route path="/search" element={<Search />} /> */}
           <Route path="/Tenantsignup" element={<Tenantsignup />} />
           <Route path="/Ownersignup" element={<Ownersignup />} />
           <Route path="/logout" element={<Logout />} /> 

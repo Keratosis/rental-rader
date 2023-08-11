@@ -19,13 +19,13 @@ function Footer() {
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact Us</a></li>
             <li><a href="#sitemap">Sitemap</a></li>
-            <li><a href="#blogs">Blogs</a></li>
+            {/* <li><a href="#blogs">Blogs</a></li> */}
           </ul>
         </div>
         <div className="footer-section">
           <h3>Contacts</h3>
           <p>Email: info@Rental-rader.com</p>
-          <p>Phone: +1 2347 5678</p>
+          <p>Phone: 0768182022</p>
           <p>Address: 235743, Muthaiga, Nairobi</p>
         </div>
         <div className="footer-section">

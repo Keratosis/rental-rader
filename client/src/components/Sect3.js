@@ -1,4 +1,5 @@
 import React, { useEffect ,useState} from 'react'
+import '../CSS/Sect2.css';
 
 function Sect3() {
   const [sect3, setListings] = useState([]);
@@ -36,17 +37,17 @@ function Sect3() {
   }, []);
     
     return (
-      <div className="horizontal-container">
+      <div className="horizontal">
         <div className="section2">
           {sect3.map((item) => (
-            <div key={item.id} className="small-container">
-              <div className="rectangle">
+            <div key={item.id} className="small-cont">
+              <div className="ectangle">
                 <img src={item.media} alt="pic" />
               </div>
-              <p>{item.title}</p>
-              <p>Rent: Kshs{item.rent}</p>
-              <p>Size: {item.size}</p>
-              <p>Address: {item.place}</p>
+              <p className="item-title">{item.title}</p>
+        <p className="rent-text">Rent: Kshs{item.rent}</p>
+        <p className="size-text">Size: {item.size}</p>
+        <p className="address-text">Address: {item.place}</p>
             </div>
           ))}
         </div>

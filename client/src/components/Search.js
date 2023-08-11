@@ -154,6 +154,8 @@ const Search = () => {
                     <img src={property.main_image} alt={`Property ${property.id}`} />
                   </div>
                   <p>{`Property Rent: ksh${property.property_rent}`}</p>
+                  <p>{`Property Rent: ksh${property.address}`}</p>
+
                 </a>
               ))
             )}
@@ -171,6 +173,7 @@ const Search = () => {
                     <img src={listing.media} alt={`Listing ${listing.id}`} />
                   </div>
                   <p>{`Listing Rent: ksh${listing.rent}`}</p>
+                  <p>{`Location:${listing.place}`}</p>
                 </a>
               ))
             )}
