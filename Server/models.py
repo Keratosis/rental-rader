@@ -146,7 +146,7 @@ class Review(db.Model):
     listing_id = db.Column(db.Integer, ForeignKey('listing.id'))
     property_id = db.Column(db.Integer, ForeignKey('properties.id'))
     comment = db.Column(db.String)
-    review_date = db.db.Column(db.DateTime, server_default =db.func.now())
+    review_date = db.Column(db.DateTime, server_default =db.func.now())
     
     #relationship
     user = relationship('User', backref='reviews')
